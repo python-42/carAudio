@@ -1,0 +1,7 @@
+Label {
+    -fx-font-size: 60px;
+}
+
+ProgressBar {
+    -fx-accent: navy;
+}
