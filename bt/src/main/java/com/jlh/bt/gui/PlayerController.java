@@ -1,9 +1,9 @@
-package com.jlh.bt.hardware;
+package com.jlh.bt.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jlh.bt.os.Track;
+import com.jlh.bt.onboard.media.Track;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -11,7 +11,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class ScreenController {
+public class PlayerController {
 
     @FXML private Label device;
     @FXML private Circle discoverable;
@@ -25,7 +25,7 @@ public class ScreenController {
 
     private final Logger logger;
 
-    public ScreenController() {
+    public PlayerController() {
         logger = LoggerFactory.getLogger(this.getClass());
     }
 
@@ -44,7 +44,7 @@ public class ScreenController {
     public void setVolume(int currVolume) {
         logger.trace("UI volume set to " + currVolume);
         volume.setText(currVolume + "");
-        volumeBar.setProgress(currVolume / 100.0);
+        volumeBar.setProgress(currVolume / 100.0); //TODO bind all properties instead of using methods
     }
 
     public void setIsDiscoverable(boolean isDiscoverable) {

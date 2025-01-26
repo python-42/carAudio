@@ -1,24 +1,30 @@
 package com.jlh.bt;
 
+import java.io.File;
 import java.lang.reflect.Field;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.simple.SimpleLogger;
 
-import com.jlh.bt.hardware.GUIDriver;
-import com.jlh.bt.hardware.ScreenController;
+import com.jlh.bt.gui.GUIDriver;
+import com.jlh.bt.gui.PlayerController;
+import com.jlh.bt.onboard.media.MediaController;
+import com.jlh.bt.onboard.media.Track;
+import com.jlh.bt.onboard.menu.MenuController;
 import com.jlh.bt.os.BluetoothController;
 import com.jlh.bt.os.FavoriteFileController;
 import com.jlh.bt.os.ShellController;
-import com.jlh.bt.os.Track;
 
 import javafx.application.Platform;
 
 public class Main {
 
-    private Logger logger;
-    private ScreenController screen;
+    private final Logger logger;
+    private final PlayerController screen;
+    private final MediaController media;
+    private final MenuController menu;
+
     public static void main(String[] args) {
         new Main(args);
     }
@@ -44,6 +50,9 @@ public class Main {
 
         screen = GUIDriver.getUIController();
         logger.debug("UI controller gotten from GUIDriver");
+
+        menu = new MenuController(new File(Constants.ONBOARD_MEDIA_DIRECTORY));
+        media = new MediaController();
 
         setUndiscoverable();
         ShellController.getInstance().resetVolume();

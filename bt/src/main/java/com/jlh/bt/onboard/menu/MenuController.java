@@ -1,0 +1,41 @@
+package com.jlh.bt.onboard.menu;
+
+import java.io.File;
+
+public class MenuController {
+    
+    private Menu menu;
+
+    public MenuController(File directory) {
+        menu = MenuFactory.constructHighLevelMenu(directory).getKey();
+    }
+
+    public Menu getCurrentMenu() {
+        return menu;
+    }
+
+    public Playlist getPlaylist() {
+        return menu.getPlaylist();
+    }
+
+    public void focusUp() {
+        menu.focusUp();
+    }
+
+    public void focusDown() {
+        menu.focusDown();
+    }
+
+    public void descend() {
+        if (menu.canDescend()) {
+            menu = menu.descend();
+        }
+    }
+
+    public void ascend() {
+        if (menu.hasParentMenu()) {
+            menu = menu.getParentMenu();
+        }
+    }
+
+}

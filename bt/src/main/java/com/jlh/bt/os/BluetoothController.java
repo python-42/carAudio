@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.github.hypfvieh.bluetooth.DeviceManager;
 import com.github.hypfvieh.bluetooth.wrapper.BluetoothDevice;
 import com.jlh.bt.Constants;
+import com.jlh.bt.onboard.media.Track;
 
 /**
  * Interact with the bluetooth adapter and bluetooth devices using DBus.
@@ -275,7 +276,8 @@ public class BluetoothController {
             return new Track(
                 (String) map.get("Title"),
                 (String) map.get("Artist"), 
-                (String) map.get("Album")
+                (String) map.get("Album"),
+                null
             );
 
         }catch (NumberFormatException e) {

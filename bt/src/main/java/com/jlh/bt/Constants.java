@@ -2,14 +2,6 @@ package com.jlh.bt;
 
 public class Constants {
     
-    //GPIO pins
-    public static final int LED = 1;
-    public static final int PLAY = 0;
-    public static final int NEXT = 0;
-    public static final int PREV = 0;
-    public static final int VOL_UP = 0;
-    public static final int VOL_DOWN = 0;
-
     //dbus
     public static final String BUSNAME = "org.bluez";
     public static final String COMMON_PATH_PREFIX = "/org/bluez/hci0/dev_";
@@ -30,5 +22,14 @@ public class Constants {
     public static final String LOG_LEVEL_CLASSES_PROPERTY = "org.slf4j.simpleLogger.log.com.jlh.bt";
     public static final String LOG_FILE_PATH = "/home/dodge/java-bt.log";
     public static final String LOG_LEVEL = "debug";
+
+    //menu css
+    public static final String FOCUSED_CSS = "-fx-border-color: white";
+    public static final String UNFOCUSED_CSS = "-fx-border-color: black";
+
+    //onboard
+    public static final String ONBOARD_MEDIA_DIRECTORY = "/home/dodge/media";
+    public static final String ONBOARD_MEDIA_FILE_EXTENSION = "mp3";
+    public static final double ONBOARD_MEDIA_MAX_VOLUME = 1;
 
 }

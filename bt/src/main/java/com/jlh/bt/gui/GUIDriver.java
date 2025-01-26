@@ -1,4 +1,4 @@
-package com.jlh.bt.hardware;
+package com.jlh.bt.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 public class GUIDriver extends Application {
 
     private Logger logger;
-    private static volatile ScreenController controller = null;
+    private static volatile PlayerController controller = null;
 
     public GUIDriver(String[] args) {
         Application.launch(args);
@@ -42,7 +42,7 @@ public class GUIDriver extends Application {
         logger.info("UI resource loading complete, UI shown.");
     }
 
-    public static synchronized ScreenController getUIController() {
+    public static synchronized PlayerController getUIController() {
         return controller;
     }
     
