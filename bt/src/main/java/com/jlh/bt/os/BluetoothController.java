@@ -84,6 +84,14 @@ public class BluetoothController {
         return rtn;
     }
 
+    public String getConnectedDeviceName() {
+        List<BluetoothDevice> list = getConnectedDevices();
+        if (list.isEmpty()) {
+            return "Disconnected";
+        }
+        return list.get(0).getName();
+    }
+
     /**
      * Used for debug purposes only
      */
@@ -328,6 +336,10 @@ public class BluetoothController {
     public void stopDiscover() {
         logger.debug("Discovery stopped.");
         manager.getAdapter().stopDiscovery();
+    }
+
+    public boolean isDiscoverable() {
+        return manager.getAdapter().isDiscoverable();
     }
 
     /**

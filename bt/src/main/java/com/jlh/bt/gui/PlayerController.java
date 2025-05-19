@@ -1,10 +1,11 @@
 package com.jlh.bt.gui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.jlh.bt.onboard.media.MediaController;
 import com.jlh.bt.onboard.media.Track;
+import com.jlh.bt.os.BluetoothController;
+import com.jlh.bt.os.ShellController;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -23,37 +24,46 @@ public class PlayerController {
     @FXML private ProgressBar volumeBar;
     @FXML private Label volume;
 
-    private final Logger logger;
+    private final BluetoothController bt;
+    private final MediaController onboard;
 
-    public PlayerController() {
-        logger = LoggerFactory.getLogger(this.getClass());
+    private boolean bluetoothActive = true;
+
+    public PlayerController(BluetoothController bt, MediaController onboard) {
+        this.bt = bt;
+        this.onboard = onboard;
+
+        device.textProperty().bind(Bindings.createStringBinding(() -> {
+            return bluetoothActive ?
+                bt.getConnectedDeviceName() : 
+                "Onboard Media;";
+        }));
+
+        artist.textProperty().bind(Bindings.createStringBinding(() -> getCurrentTrack().artist()));
+        album.textProperty().bind(Bindings.createStringBinding(() -> getCurrentTrack().album()));
+        name.textProperty().bind(Bindings.createStringBinding(() -> getCurrentTrack().name()));
+
+        volume.textProperty().bind(Bindings.createStringBinding(() -> ShellController.getInstance().getCurrentVolume() + ""));
+        volumeBar.progressProperty().bind(Bindings.createDoubleBinding(() -> ShellController.getInstance().getCurrentVolume() / 100.0));
+
+        discoverable.fillProperty().bind(Bindings.createObjectBinding(() -> {
+            if (bluetoothActive) {
+                return BluetoothController.getInstance().isDiscoverable() ? 
+                    Color.GREEN :
+                    Color.RED;
+            }
+            return Color.BLACK;
+        }));
     }
 
-    public void setTrackInformation(Track track) {
-        logger.trace("Track UI set to " + track);
-        artist.setText(track.artist());
-        album.setText(track.album());
-        name.setText(track.name());
+    private Track getCurrentTrack() {
+        return bluetoothActive ?
+            bt.getCurrentTrack() :
+            onboard.getCurrentTrack();
     }
 
-    public void setDevice(String deviceName) {
-        logger.trace("UI device name set to " + deviceName);
-        device.setText(deviceName);
-    }
-
-    public void setVolume(int currVolume) {
-        logger.trace("UI volume set to " + currVolume);
-        volume.setText(currVolume + "");
-        volumeBar.setProgress(currVolume / 100.0); //TODO bind all properties instead of using methods
-    }
-
-    public void setIsDiscoverable(boolean isDiscoverable) {
-        logger.trace("Discoverable indicator set to " + isDiscoverable + " on UI.");
-        if (isDiscoverable) {
-            discoverable.setFill(Color.GREEN);
-        }else {
-            discoverable.setFill(Color.RED);
-        }
+    public void setBluetoothActive(boolean active) {
+        bluetoothActive = active;
     }
     
 }

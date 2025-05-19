@@ -10,13 +10,10 @@ import org.slf4j.simple.SimpleLogger;
 import com.jlh.bt.gui.GUIDriver;
 import com.jlh.bt.gui.PlayerController;
 import com.jlh.bt.onboard.media.MediaController;
-import com.jlh.bt.onboard.media.Track;
 import com.jlh.bt.onboard.menu.MenuController;
 import com.jlh.bt.os.BluetoothController;
 import com.jlh.bt.os.FavoriteFileController;
 import com.jlh.bt.os.ShellController;
-
-import javafx.application.Platform;
 
 public class Main {
 
@@ -49,25 +46,21 @@ public class Main {
         }
 
         screen = GUIDriver.getUIController();
-        logger.debug("UI controller gotten from GUIDriver");
+        logger.debug("GUIDriver successfully provided UI controller");
 
         menu = new MenuController(new File(Constants.ONBOARD_MEDIA_DIRECTORY));
         media = new MediaController();
 
-        setUndiscoverable();
+        BluetoothController.getInstance().setDiscoverableState(false);
         ShellController.getInstance().resetVolume();
-
-        new Thread(this::updateUI, "UI Update Thread").start();
 
         //assume that there is only one device connected at once
         BluetoothController.getInstance().setOnDisconnectionEvent(() -> {
-            setDiscoverable();
-            Platform.runLater(() -> screen.setDevice("Disconnected"));
+            BluetoothController.getInstance().setDiscoverableState(true);
         });
         BluetoothController.getInstance().setOnConnectionEvent(() -> {
-            setUndiscoverable();
+            BluetoothController.getInstance().setDiscoverableState(false);
             FavoriteFileController.getInstance().setAddress(BluetoothController.getInstance().getConnectedDevices().get(0).getAddress());
-            Platform.runLater(() -> screen.setDevice(BluetoothController.getInstance().getConnectedDevices().get(0).getName()));
         });
 
         //TODO buttons
@@ -89,48 +82,12 @@ public class Main {
                 BluetoothController.getInstance().play();
             }else {
                 logger.info("Favorite device connection unsuccessful. Enabling discovery.");
-                setDiscoverable();
+                BluetoothController.getInstance().setDiscoverableState(true);
             }
         }else {
             //start over. No devices should be connected before this program starts running anyways.
             BluetoothController.getInstance().disconnectAllExcept("");
-            setDiscoverable();
-        }
-    }
-
-    private void setDiscoverable() {
-        Platform.runLater(() -> screen.setIsDiscoverable(true));
-        BluetoothController.getInstance().setDiscoverableState(true);
-    }
-
-    private void setUndiscoverable() {
-        Platform.runLater(() -> screen.setIsDiscoverable(false));
-        BluetoothController.getInstance().setDiscoverableState(false);
-    }
-
-    private void updateUI() {
-        logger.info("Update UI thread started.");
-        int previousVolume = -100;
-        Track previousTrack = null;
-
-        while (true) {
-            int vol = ShellController.getInstance().getCurrentVolume();
-            Track track = BluetoothController.getInstance().getConnectedDevices().isEmpty() ?
-                        Track.BLANK :
-                        BluetoothController.getInstance().getCurrentTrack();
-
-            if (vol != previousVolume) {
-                logger.debug("New volume " + vol);
-                Platform.runLater(() -> screen.setVolume(vol));
-            }
-
-            if (!track.equals(previousTrack)) {
-                logger.debug("New track: " + track);
-                Platform.runLater(() -> screen.setTrackInformation(track));
-            }
-        
-            previousVolume = vol;
-            previousTrack = track;
+            BluetoothController.getInstance().setDiscoverableState(true);
         }
     }
 
