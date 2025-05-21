@@ -16,6 +16,8 @@ public abstract class Constants {
         }
         return instance;
     }
+
+    public abstract boolean IS_PROD();
     
     //dbus
     public final String BUSNAME() {return "org.bluez";};

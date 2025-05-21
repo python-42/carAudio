@@ -4,6 +4,9 @@ package com.jlh.bt.constants;
 class DevConstants extends Constants {
 
     @Override
+    public boolean IS_PROD() {return false;}
+
+    @Override
     public String COMMON_PATH_PREFIX() {return "/org/bluez/hci0/dev_";}
 
     @Override
