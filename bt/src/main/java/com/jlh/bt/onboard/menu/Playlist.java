@@ -73,8 +73,10 @@ public class Playlist {
      * Move to the next track. If at the final track, loop back to zero. 
      */
     public void nextTrack() {
-        if (currentTrack != getTrackCount() -1) {
+        if (currentTrack == getTrackCount() -1) {
             currentTrack = 0;
+        }else {
+            currentTrack++;
         }
     }
 
