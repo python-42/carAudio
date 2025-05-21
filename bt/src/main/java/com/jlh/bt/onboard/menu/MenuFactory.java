@@ -42,7 +42,7 @@ public class MenuFactory {
             return false;
         }
         int index = file.getName().lastIndexOf('.');
-        return file.getName().substring(index).equals(CONSTANTS.ONBOARD_MEDIA_FILE_EXTENSION());
+        return file.getName().substring(index+1).equals(CONSTANTS.ONBOARD_MEDIA_FILE_EXTENSION());
     };
 
     private final HashMap<String, byte[]> albumArtCache = new HashMap<>();
@@ -52,13 +52,19 @@ public class MenuFactory {
     public Pair<Menu, Playlist> constructHighLevelMenu(File directory) {
         Playlist allSongs = new Playlist("All Songs", loadMusicFiles(directory));
 
+        Menu artistMenu = getCategoryMenu(artistPlaylistMap, "Artists");
+        Menu genreMenu = getCategoryMenu(genrePlaylistMap, "Genres");
+
         Menu rootMenu = new Menu(
             List.of(
-                new MenuItem("Artist", getCategoryMenu(artistPlaylistMap, "Artists"), allSongs, 0),
-                new MenuItem("Genre", getCategoryMenu(genrePlaylistMap, "Genres"), allSongs, 0)
+                new MenuItem("Artist", artistMenu, allSongs, 0),
+                new MenuItem("Genre", genreMenu, allSongs, 0)
             ), 
             "Onboard Music"
         );
+
+        artistMenu.setParentMenu(rootMenu);
+        genreMenu.setParentMenu(rootMenu);
 
         return new Pair<Menu,Playlist>(rootMenu, allSongs);
     }
@@ -119,6 +125,7 @@ public class MenuFactory {
                     updatePlaylistMap(artistPlaylistMap, newTrack.artist(), newTrack);
                     updatePlaylistMap(genrePlaylistMap, newTrack.genre(), newTrack);
 
+                    System.out.println(tags.getAlbumImageMimeType());
                     if (
                         tags.getAlbumImage() != null 
                         && tags.getAlbumImageMimeType().equalsIgnoreCase(CONSTANTS.ONBOARD_MEDIA_ALBUM_ART_TYPE())
@@ -135,6 +142,8 @@ public class MenuFactory {
                 logger.error("Encountered exception while parsing tags of audio file " + f.getName(), e);
             }
         }
+
+        logger.info(trackList.size() + " audio files loaded.");
 
         return trackList;
     }

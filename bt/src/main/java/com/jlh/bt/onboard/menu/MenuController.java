@@ -2,6 +2,8 @@ package com.jlh.bt.onboard.menu;
 
 import java.io.File;
 
+import javafx.scene.layout.VBox;
+
 public class MenuController {
     
     private Menu menu;
@@ -36,6 +38,10 @@ public class MenuController {
         if (menu.hasParentMenu()) {
             menu = menu.getParentMenu();
         }
+    }
+
+    public VBox getUIComponent() {
+        return menu.getUIComponent();
     }
 
 }

@@ -7,13 +7,19 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+/**
+ * This class manages playback of onboard audio files. 
+ */
 public class MediaController {
-    
+
     private MediaPlayer player = null;
     private Playlist playlist = null;
+    
     private final Constants CONSTANTS;
+    private final Runnable songChangeCallback;
 
-    public MediaController() {
+    public MediaController(Runnable songChangeCallback) {
+        this.songChangeCallback = songChangeCallback;
         CONSTANTS = Constants.getInstance();
     }
 
@@ -27,7 +33,7 @@ public class MediaController {
         if (playlist != null) {
             return playlist.getCurrentTrack();
         }
-        return null;
+        return Track.NOTHING;
     }
 
     /**
@@ -88,6 +94,8 @@ public class MediaController {
 
         player.setVolume(CONSTANTS.ONBOARD_MEDIA_MAX_VOLUME());
         player.setAutoPlay(true); // as soon as playback is ready we begin to play this track
+
+        songChangeCallback.run();
     }
 
     private void endOfMediaHandler() {

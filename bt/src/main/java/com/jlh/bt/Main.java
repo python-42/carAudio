@@ -44,24 +44,13 @@ public class Main {
         debugPrintConstants();
 
         new Thread( () -> {
-                CANDriver can = CANDriver.getInstance();
-                can.registerCallback(() -> System.out.println("up"), CONSTANTS.UP_BUTTON(), false);
-                can.registerCallback(() -> System.out.println("down"), CONSTANTS.DOWN_BUTTON(), false);
-                can.registerCallback(() -> System.out.println("left"), CONSTANTS.LEFT_BUTTON(), false);
-                can.registerCallback(() -> System.out.println("right"), CONSTANTS.RIGHT_BUTTON(), false);
-                can.registerCallback(() -> System.out.println("ok"), CONSTANTS.OK_BUTTON(), false);
-            },
-            "CAN driver thread"
-        ).start();
-
-        new Thread( () -> {
                 new GUIDriver(args);
                 System.exit(0); //kill other threads if UI closes. 
             }, 
             "GUI driver thread"
         ).start();
 
-        while (GUIDriver.getBluetoothUIController() == null && GUIDriver.getOnboardUIController() == null) {
+        while (GUIDriver.getBluetoothUIController() == null || GUIDriver.getOnboardUIController() == null) {
             //do nothing
         }
 
@@ -70,13 +59,26 @@ public class Main {
         logger.debug("GUIDriver successfully provided UI controller");
 
         menu = new MenuController(new File(CONSTANTS.ONBOARD_MEDIA_DIRECTORY()));
-        media = new MediaController();
+        media = new MediaController(() -> onboardUI.updateTrack());
 
-        bluetoothUI.setBluetoothController(BluetoothController.getInstance());
-        onboardUI.setOnboardController(media);
+        onboardUI.setOnboardController(media, menu);
 
-        BluetoothController.getInstance().setDiscoverableState(false);
         ShellController.getInstance().resetVolume();
+        registerCanCallbacks();
+        //bluetoothInit();
+    }
+
+    private void registerCanCallbacks() {
+        CANDriver can = CANDriver.getInstance();
+        can.registerCallback(() -> menu.focusUp(), CONSTANTS.UP_BUTTON(), false);
+        can.registerCallback(() -> menu.focusDown(), CONSTANTS.DOWN_BUTTON(), false);
+        can.registerCallback(() -> {menu.ascend(); onboardUI.updateMenu();}, CONSTANTS.LEFT_BUTTON(), false);
+        can.registerCallback(() -> {menu.descend(); onboardUI.updateMenu();}, CONSTANTS.RIGHT_BUTTON(), false);
+        can.registerCallback(() -> {media.setPlaylist(menu.getPlaylist()); System.out.println(media.getCurrentTrack().name());}, CONSTANTS.OK_BUTTON(), false);
+    }
+
+    private void bluetoothInit() {
+        BluetoothController.getInstance().setDiscoverableState(false);
 
         //assume that there is only one device connected at once
         BluetoothController.getInstance().setOnDisconnectionEvent(() -> {
@@ -87,8 +89,7 @@ public class Main {
             FavoriteFileController.getInstance().setAddress(BluetoothController.getInstance().getConnectedDevices().get(0).getAddress());
         });
 
-        //TODO buttons
-
+        bluetoothUI.setBluetoothController(BluetoothController.getInstance());
         attemptFavoriteConnection();
     }
 

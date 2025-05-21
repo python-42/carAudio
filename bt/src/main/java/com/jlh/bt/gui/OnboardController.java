@@ -2,21 +2,31 @@ package com.jlh.bt.gui;
 
 import java.io.ByteArrayInputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jlh.bt.onboard.media.MediaController;
+import com.jlh.bt.onboard.menu.MenuController;
 import com.jlh.bt.onboard.menu.MenuFactory;
 import com.jlh.bt.os.ShellController;
 
-import javafx.beans.binding.Bindings;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 public class OnboardController {
     
-    @FXML private Pane menuPane;
+    @FXML private AnchorPane menuPane;
 
     @FXML private ImageView albumArt;
     @FXML private Label album;
@@ -26,30 +36,64 @@ public class OnboardController {
     @FXML private ProgressBar volume;
     @FXML private ProgressBar trackProgress;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private MediaController onboard;
+    private MenuController menu;
     private Image unknownArtImage;
 
-    public void setOnboardController(MediaController onboard) {
+    public void setOnboardController(MediaController onboard, MenuController menu) {
         this.onboard = onboard;
-        bind();
-    }
-
-    private void bind() {
-        artist.textProperty().bind(Bindings.createStringBinding(() -> onboard.getCurrentTrack().artist()));
-        album.textProperty().bind(Bindings.createStringBinding(() -> onboard.getCurrentTrack().album()));
-        name.textProperty().bind(Bindings.createStringBinding(() -> onboard.getCurrentTrack().name()));
+        this.menu = menu;
 
         this.unknownArtImage = albumArt.getImage();
-        albumArt.imageProperty().bind(Bindings.createObjectBinding(this::getAlbumArt));
-
-        volume.progressProperty().bind(Bindings.createDoubleBinding(() -> ShellController.getInstance().getCurrentVolume() / 100.0));
-        trackProgress.progressProperty().bind(Bindings.createDoubleBinding(() -> onboard.getPercentageComplete()));
+        startTrackProgressUpdater();
+        updateMenu();
+        updateTrack();
+        updateVolume();
     }
 
+    public void updateMenu() {
+        Platform.runLater(() -> {
+            menuPane.getChildren().clear();
+            menuPane.getChildren().add(menu.getUIComponent());
+        });
+    }
+
+    public void updateTrack() {
+        Platform.runLater(() -> {
+            artist.setText(onboard.getCurrentTrack().artist());
+            album.setText(onboard.getCurrentTrack().album());
+            name.setText(onboard.getCurrentTrack().name());
+            albumArt.setImage(getAlbumArt());
+            trackProgress.setProgress(0);
+        });
+    }
+
+    public void updateVolume() {
+        Platform.runLater(() -> volume.setProgress(ShellController.getInstance().getCurrentVolume()));
+    }
+
+    private void startTrackProgressUpdater() {
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.seconds(0),
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        trackProgress.setProgress(onboard.getPercentageComplete());
+                    }
+                }
+            ),
+            new KeyFrame(Duration.seconds(0.5))
+        );
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
 
     public Image getAlbumArt() {
         byte[] buffer = MenuFactory.getInstance().getAlbumArt(onboard.getCurrentTrack());
         if (buffer == null) {
+            logger.trace("Unknown album art found for track " + onboard.getCurrentTrack() + ", reverting to default image");
             return unknownArtImage;
         }
         return new Image(new ByteArrayInputStream(buffer));
