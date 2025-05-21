@@ -285,6 +285,7 @@ public class BluetoothController {
                 (String) map.get("Title"),
                 (String) map.get("Artist"), 
                 (String) map.get("Album"),
+                "",
                 null
             );
 
