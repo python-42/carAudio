@@ -1,7 +1,5 @@
 package com.jlh.bt.gui;
 
-import com.jlh.bt.onboard.media.MediaController;
-import com.jlh.bt.onboard.media.Track;
 import com.jlh.bt.os.BluetoothController;
 import com.jlh.bt.os.ShellController;
 
@@ -12,7 +10,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class PlayerController {
+public class BtPlayerController {
 
     @FXML private Label device;
     @FXML private Circle discoverable;
@@ -24,24 +22,25 @@ public class PlayerController {
     @FXML private ProgressBar volumeBar;
     @FXML private Label volume;
 
-    private final BluetoothController bt;
-    private final MediaController onboard;
+    private BluetoothController bt;
 
     private boolean bluetoothActive = true;
 
-    public PlayerController(BluetoothController bt, MediaController onboard) {
+    public void setBluetoothController(BluetoothController bt) {
         this.bt = bt;
-        this.onboard = onboard;
+        createBindings();
+    }
 
+    private void createBindings() {
         device.textProperty().bind(Bindings.createStringBinding(() -> {
             return bluetoothActive ?
                 bt.getConnectedDeviceName() : 
                 "Onboard Media;";
         }));
 
-        artist.textProperty().bind(Bindings.createStringBinding(() -> getCurrentTrack().artist()));
-        album.textProperty().bind(Bindings.createStringBinding(() -> getCurrentTrack().album()));
-        name.textProperty().bind(Bindings.createStringBinding(() -> getCurrentTrack().name()));
+        artist.textProperty().bind(Bindings.createStringBinding(() -> bt.getCurrentTrack().artist()));
+        album.textProperty().bind(Bindings.createStringBinding(() -> bt.getCurrentTrack().album()));
+        name.textProperty().bind(Bindings.createStringBinding(() -> bt.getCurrentTrack().name()));
 
         volume.textProperty().bind(Bindings.createStringBinding(() -> ShellController.getInstance().getCurrentVolume() + ""));
         volumeBar.progressProperty().bind(Bindings.createDoubleBinding(() -> ShellController.getInstance().getCurrentVolume() / 100.0));
@@ -54,12 +53,6 @@ public class PlayerController {
             }
             return Color.BLACK;
         }));
-    }
-
-    private Track getCurrentTrack() {
-        return bluetoothActive ?
-            bt.getCurrentTrack() :
-            onboard.getCurrentTrack();
     }
 
     public void setBluetoothActive(boolean active) {
