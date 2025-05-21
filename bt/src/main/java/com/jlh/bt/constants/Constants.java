@@ -31,7 +31,8 @@ public abstract class Constants {
     public final int VOLUME_CHANGE_PERCENTAGE() {return 5;}
 
     //ui
-    public final String FXML_FILENAME() {return "main.fxml";}
+    public final String PLAYER_FXML_FILENAME() {return "player.fxml";}
+    public final String ONBOARD_FXML_FILENAME() {return "onboard.fxml";}
 
     //logging
     public final String LOG_LEVEL_CLASSES_PROPERTY() {return "org.slf4j.simpleLogger.log.com.jlh.bt";}

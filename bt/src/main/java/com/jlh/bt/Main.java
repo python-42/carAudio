@@ -1,15 +1,16 @@
 package com.jlh.bt;
 
 import java.io.File;
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.simple.SimpleLogger;
 
 import com.jlh.bt.constants.Constants;
+import com.jlh.bt.gui.BtPlayerController;
 import com.jlh.bt.gui.GUIDriver;
-import com.jlh.bt.gui.PlayerController;
+import com.jlh.bt.gui.OnboardController;
 import com.jlh.bt.onboard.media.MediaController;
 import com.jlh.bt.onboard.menu.MenuController;
 import com.jlh.bt.os.BluetoothController;
@@ -19,14 +20,15 @@ import com.jlh.bt.os.ShellController;
 public class Main {
 
     private final Logger logger;
-    private final PlayerController screen;
+    private final BtPlayerController bluetoothUI;
+    private final OnboardController onboardUI;
+
     private final MediaController media;
     private final MenuController menu;
 
     private final Constants CONSTANTS;
 
     public static void main(String[] args) {
-        
         new Main(args);
     }
 
@@ -47,15 +49,19 @@ public class Main {
             "GUI driver thread"
         ).start();
 
-        while (GUIDriver.getUIController() == null) {
+        while (GUIDriver.getBluetoothUIController() == null && GUIDriver.getOnboardUIController() == null) {
             //do nothing
         }
 
-        screen = GUIDriver.getUIController();
+        bluetoothUI = GUIDriver.getBluetoothUIController();
+        onboardUI = GUIDriver.getOnboardUIController();
         logger.debug("GUIDriver successfully provided UI controller");
 
         menu = new MenuController(new File(CONSTANTS.ONBOARD_MEDIA_DIRECTORY()));
         media = new MediaController();
+
+        bluetoothUI.setBluetoothController(BluetoothController.getInstance());
+        onboardUI.setOnboardController(media);
 
         BluetoothController.getInstance().setDiscoverableState(false);
         ShellController.getInstance().resetVolume();
@@ -102,10 +108,14 @@ public class Main {
      */
     private void debugPrintConstants() {
         logger.debug("All Constants: ");
-        for (Field f : Constants.class.getFields()) {
+        for (Method m : Constants.class.getMethods()) {
             try {
-                logger.debug(f.getName() + ": " + f.get(null) + "(" + f.getType().getName() + ")");
-            } catch (IllegalArgumentException | IllegalAccessException ignored) {}
+                if (m.getName().equals("toString") || m.getName().equals("hashCode") || m.getName().equals("getClass")) {
+                    continue;
+                }
+                logger.debug(m.getName() + ": " + m.invoke(Constants.getInstance()) + "(" + m.getReturnType().getName() +")");
+            } catch (Exception ignored) {}
+            
         }
     }
 }

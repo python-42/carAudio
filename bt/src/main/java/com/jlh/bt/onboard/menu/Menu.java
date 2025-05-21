@@ -22,7 +22,7 @@ public class Menu {
             this.items.add(MenuItem.NO_ITEMS_ITEM);   
         }
 
-        items.get(focus).setFocused(true);
+        this.items.get(focus).setFocused(true);
 
         this.title = title;
     }

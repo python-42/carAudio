@@ -1,0 +1,15 @@
+Label {
+    -fx-font-size: 30px;
+}
+
+ProgressBar {
+    -fx-accent: navy;
+}
+
+/*
+Removes the spacing surrounding the colored element of the progress bar to allow extremely small progress bars
+*/
+.progress-bar .bar {
+    -fx-padding:1px; 
+    -fx-background-insets:0;
+}

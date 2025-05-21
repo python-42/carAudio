@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@onboard.css" xmlns="http://javafx.com/javafx/24" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jlh.bt.gui.OnboardController">
+   
+   <children>
+      <Label fx:id="artist" layoutX="10.0" layoutY="393.0" text="ARTIST" textFill="WHITE" />
+      <Label fx:id="album" layoutX="10.0" layoutY="431.0" text="ALBUM" textFill="WHITE" />
+      <Label fx:id="name" layoutX="10.0" layoutY="355.0" text="TRACK NAME" textFill="WHITE" />
+      <ImageView fx:id="albumArt" fitHeight="350.0" fitWidth="350.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@unknown.png" />
+         </image></ImageView>
+      <Pane fx:id="meunPane" layoutX="360.0" prefHeight="480.0" prefWidth="440.0" style="-fx-background-color: #111;" />
+      <ProgressBar fx:id="trackProgress" layoutX="5.0" layoutY="350.0" prefHeight="5.0" prefWidth="350.0" progress="0.0" />
+      <ProgressBar fx:id="volume" layoutX="5.0" layoutY="3.0" prefHeight="5.0" prefWidth="350.0" progress="0.0" />
+   </children>
+
+</Pane>

@@ -149,13 +149,13 @@ public class MenuFactory {
     }
 
     /**
-     * Get the album art associated with a particular album. 
-     * @param artist The artist that created the album
-     * @param album The name of the album
+     * Get the album art associated with a particular track.
+     * @param track Any track
      * @return byte array representing an image or null
      */
-    public byte[] getAlbumArt(String artist, String album) {
-        return albumArtCache.get(artist + "-" + album);
+    public byte[] getAlbumArt(Track track) {
+
+        return albumArtCache.get(track.artist() + "-" + track.album());
     }
 
     /**
