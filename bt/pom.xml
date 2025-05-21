@@ -70,6 +70,25 @@
       <artifactId>mp3agic</artifactId>
       <version>0.9.1</version>
     </dependency>
+
+    <dependency>
+      <groupId>tel.schich</groupId>
+      <artifactId>javacan-core</artifactId>
+      <version>3.5.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>tel.schich</groupId>
+      <artifactId>javacan-epoll</artifactId>
+      <version>3.5.0</version>
+    </dependency>
+
+    <dependency> <!-- Necessary for CAN button simulation in dev environment -->
+      <groupId>com.github.kwhat</groupId>
+      <artifactId>jnativehook</artifactId>
+      <version>2.2.2</version>
+    </dependency>
+
   </dependencies>
 
   <build>

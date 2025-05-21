@@ -11,6 +11,7 @@ import com.jlh.bt.constants.Constants;
 import com.jlh.bt.gui.BtPlayerController;
 import com.jlh.bt.gui.GUIDriver;
 import com.jlh.bt.gui.OnboardController;
+import com.jlh.bt.hardware.CANDriver;
 import com.jlh.bt.onboard.media.MediaController;
 import com.jlh.bt.onboard.menu.MenuController;
 import com.jlh.bt.os.BluetoothController;
@@ -41,6 +42,17 @@ public class Main {
         logger = LoggerFactory.getLogger(this.getClass());
         logger.info("Execution started.");
         debugPrintConstants();
+
+        new Thread( () -> {
+                CANDriver can = CANDriver.getInstance();
+                can.registerCallback(() -> System.out.println("up"), CONSTANTS.UP_BUTTON(), false);
+                can.registerCallback(() -> System.out.println("down"), CONSTANTS.DOWN_BUTTON(), false);
+                can.registerCallback(() -> System.out.println("left"), CONSTANTS.LEFT_BUTTON(), false);
+                can.registerCallback(() -> System.out.println("right"), CONSTANTS.RIGHT_BUTTON(), false);
+                can.registerCallback(() -> System.out.println("ok"), CONSTANTS.OK_BUTTON(), false);
+            },
+            "CAN driver thread"
+        ).start();
 
         new Thread( () -> {
                 new GUIDriver(args);
