@@ -74,7 +74,7 @@ public class Main {
         can.registerCallback(() -> menu.focusDown(), CONSTANTS.DOWN_BUTTON(), false);
         can.registerCallback(() -> {menu.ascend(); onboardUI.updateMenu();}, CONSTANTS.LEFT_BUTTON(), false);
         can.registerCallback(() -> {menu.descend(); onboardUI.updateMenu();}, CONSTANTS.RIGHT_BUTTON(), false);
-        can.registerCallback(() -> {media.setPlaylist(menu.getPlaylist()); System.out.println(media.getCurrentTrack().name());}, CONSTANTS.OK_BUTTON(), false);
+        can.registerCallback(() -> media.setPlaylist(menu.getPlaylist()), CONSTANTS.OK_BUTTON(), false);
     }
 
     private void bluetoothInit() {

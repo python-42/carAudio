@@ -126,7 +126,6 @@ public class MusicLoader {
                     updatePlaylistMap(artistPlaylistMap, newTrack.artist(), newTrack);
                     updatePlaylistMap(genrePlaylistMap, newTrack.genre(), newTrack);
 
-                    System.out.println(tags.getAlbumImageMimeType());
                     if (
                         tags.getAlbumImage() != null 
                         && tags.getAlbumImageMimeType().equalsIgnoreCase(CONSTANTS.ONBOARD_MEDIA_ALBUM_ART_TYPE())
