@@ -30,6 +30,7 @@ public class Constants {
     //onboard
     public static final String ONBOARD_MEDIA_DIRECTORY = "/home/dodge/media";
     public static final String ONBOARD_MEDIA_FILE_EXTENSION = "mp3";
+    public static final String ONBOARD_MEDIA_ALBUM_ART_TYPE = "png";
     public static final double ONBOARD_MEDIA_MAX_VOLUME = 1;
 
 }

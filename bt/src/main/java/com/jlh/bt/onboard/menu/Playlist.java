@@ -1,7 +1,6 @@
 package com.jlh.bt.onboard.menu;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.jlh.bt.onboard.media.Track;
@@ -27,21 +26,6 @@ public class Playlist {
 
         order = new ArrayList<>(getTrackCount());
         setNaturalOrder();
-    }
-
-    public Playlist(String name, ArrayList<Playlist> playlist) {
-        //above needs to be an arraylist because of type erasure
-        this(name, unzipList(playlist));
-    }
-
-    private static List<Track> unzipList(List<Playlist> list) {
-        List<Track> complete = new LinkedList<>();
-        
-        for (Playlist p : list) {
-            complete.addAll(p.songs);
-        }
-
-        return complete;
     }
 
     public void toggleShuffle() {
@@ -115,6 +99,13 @@ public class Playlist {
 
     public String getName() {
         return name;
+    }
+
+    public void appendTrack(Track track) {
+        songs.add(track);
+        //we need to update the order list to include a number for our new track. 
+        //new track will play at the end whether or not shuffle is enabled\
+        order.add(order.size()); 
     }
         
 }

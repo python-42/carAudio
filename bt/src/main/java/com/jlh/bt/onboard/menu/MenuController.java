@@ -7,7 +7,7 @@ public class MenuController {
     private Menu menu;
 
     public MenuController(File directory) {
-        menu = MenuFactory.constructHighLevelMenu(directory).getKey();
+        menu = MenuFactory.getInstance().constructHighLevelMenu(directory).getKey();
     }
 
     public Menu getCurrentMenu() {
