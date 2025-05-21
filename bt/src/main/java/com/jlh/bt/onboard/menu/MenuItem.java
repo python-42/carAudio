@@ -1,6 +1,7 @@
 package com.jlh.bt.onboard.menu;
 
 import com.jlh.bt.constants.Constants;
+import com.jlh.bt.gui.ScrollingText;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -31,7 +32,7 @@ public class MenuItem {
         HBox box = new HBox();
         box.setMaxWidth(Double.MAX_VALUE);
         
-        Label label = new Label(name);
+        Label label = new ScrollingText(name, CONSTANTS.MENU_TEXT_WIDTH());
         label.setPadding(new Insets(0, 10, 0, 5));
 
         box.getChildren().add(label);

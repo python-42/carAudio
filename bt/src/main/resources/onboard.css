@@ -2,6 +2,10 @@ Label {
     -fx-font-size: 30px;
 }
 
+ScrollingText {
+    -fx-font-size: 30px;
+}
+
 ProgressBar {
     -fx-accent: navy;
 }
