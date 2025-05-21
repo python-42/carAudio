@@ -69,9 +69,13 @@ public class ShellController {
     /**
      * Get the current system volume level.
      * See https://www.baeldung.com/linux/volume-level-command-line
-     * @return
+     * @return int between 0 and 100 inclusive
      */
     public int getCurrentVolume() {
+        if (!Constants.getInstance().IS_PROD()) {
+            return getCurrentVolumeDev();
+        }
+
         try {
             Process proc = Runtime.getRuntime().exec("amixer -D pulse sget Master");
             proc.waitFor();
@@ -90,6 +94,18 @@ public class ShellController {
             logger.error("Thread interrupted while waiting for volume getter process to finish", e);
         } catch (NumberFormatException e) {
             logger.error("Number format exception occurred while parsing output of volume getter process.", e);
+        }
+
+        return 0;
+    }
+
+    private int getCurrentVolumeDev() {
+        try {
+            Process proc = Runtime.getRuntime().exec("wpctl get-volume @DEFAULT_AUDIO_SINK@");
+            String out = proc.inputReader().readLine();
+            return (int)(Double.parseDouble(out.substring(7)) * 100);
+        } catch (IOException e) {
+            logger.error("DEV: IO exception occurred while trying to get system volume", e);
         }
 
         return 0;

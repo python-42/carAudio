@@ -49,7 +49,6 @@ public class OnboardController {
         startTrackProgressUpdater();
         updateMenu();
         updateTrack();
-        updateVolume();
     }
 
     public void updateMenu() {
@@ -69,10 +68,6 @@ public class OnboardController {
         });
     }
 
-    public void updateVolume() {
-        Platform.runLater(() -> volume.setProgress(ShellController.getInstance().getCurrentVolume()));
-    }
-
     private void startTrackProgressUpdater() {
         Timeline timeline = new Timeline(
             new KeyFrame(Duration.seconds(0),
@@ -80,6 +75,7 @@ public class OnboardController {
                     @Override
                     public void handle(ActionEvent e) {
                         trackProgress.setProgress(onboard.getPercentageComplete());
+                        volume.setProgress(ShellController.getInstance().getCurrentVolume() / 100.0);
                     }
                 }
             ),
