@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,8 +53,8 @@ public class MusicLoader {
     public Pair<Menu, Playlist> constructHighLevelMenu(File directory) {
         Playlist allSongs = new Playlist("All Songs", loadMusicFiles(directory));
 
-        Menu artistMenu = getCategoryMenu(artistPlaylistMap, "Artists");
-        Menu genreMenu = getCategoryMenu(genrePlaylistMap, "Genres");
+        Menu artistMenu = getCategoryMenu(artistPlaylistMap, "Artists", (t) -> t.name() + " - " + t.album());
+        Menu genreMenu = getCategoryMenu(genrePlaylistMap, "Genres", (t) -> t.name() + " - " + t.artist());
 
         Menu rootMenu = new Menu(
             List.of(
@@ -75,7 +76,7 @@ public class MusicLoader {
      * @param title the title of the parent menu
      * @return Menu object with the provided title
      */
-    private Menu getCategoryMenu(HashMap<String, Playlist> map, String title) {
+    private Menu getCategoryMenu(HashMap<String, Playlist> map, String title, Function<Track, String> trackName) {
         List<MenuItem> menuItems = new ArrayList<>(map.size());
 
         for (Entry<String, Playlist> entry : map.entrySet()) {
@@ -84,7 +85,7 @@ public class MusicLoader {
             //create menu displaying an artists discography or all songs in a genre
             List<MenuItem> subMenuItems = new ArrayList<>(playlist.getTrackCount());
             for (int i = 0; i < playlist.getTrackCount(); i++) {
-                subMenuItems.add(new MenuItem(playlist.getCurrentTrack().name(), null, playlist, i));
+                subMenuItems.add(new MenuItem(trackName.apply(playlist.getCurrentTrack()), null, playlist, i));
                 playlist.nextTrack();
             }
 
