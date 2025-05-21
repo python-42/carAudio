@@ -22,5 +22,24 @@ class DevConstants extends Constants {
     public String LOG_LEVEL() {return "debug";}
 
     @Override
+    public boolean IS_UI_FULLSCREEN() {return false;}
+
+
+    @Override
     public String ONBOARD_MEDIA_DIRECTORY() {return "/home/jake/CarDev/media";}
+
+    @Override
+    public int LEFT_BUTTON() {return 30;}
+
+    @Override
+    public int RIGHT_BUTTON() {return 32;}
+
+    @Override
+    public int UP_BUTTON() {return 17;}
+
+    @Override
+    public int DOWN_BUTTON() {return 31;}
+
+    @Override
+    public int OK_BUTTON() {return 57;}
 }

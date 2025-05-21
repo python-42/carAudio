@@ -22,5 +22,23 @@ class ProdConstants extends Constants {
     public String LOG_LEVEL() {return "debug";}
 
     @Override
+    public boolean IS_UI_FULLSCREEN() {return true;}
+
+    @Override
     public String ONBOARD_MEDIA_DIRECTORY() {return "/home/dodge/media";}
+
+    @Override
+    public int LEFT_BUTTON() {return -1;}
+
+    @Override
+    public int RIGHT_BUTTON() {return -1;}
+
+    @Override
+    public int UP_BUTTON() {return -1;}
+
+    @Override
+    public int DOWN_BUTTON() {return -1;}
+
+    @Override
+    public int OK_BUTTON() {return -1;}
 }

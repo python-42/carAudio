@@ -50,7 +50,7 @@ public class GUIDriver extends Application {
         logger.debug("Onboard menu UI controller assigned");
 
         showMusicDetailScene();
-        stage.setFullScreen(true);
+        stage.setFullScreen(CONSTANTS.IS_UI_FULLSCREEN());
         stage.setFullScreenExitHint("");
         stage.show();
 

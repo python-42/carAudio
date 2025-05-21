@@ -35,6 +35,7 @@ public abstract class Constants {
     //ui
     public final String PLAYER_FXML_FILENAME() {return "player.fxml";}
     public final String ONBOARD_FXML_FILENAME() {return "onboard.fxml";}
+    public abstract boolean IS_UI_FULLSCREEN();
 
     //logging
     public final String LOG_LEVEL_CLASSES_PROPERTY() {return "org.slf4j.simpleLogger.log.com.jlh.bt";}
@@ -50,4 +51,11 @@ public abstract class Constants {
     public final String ONBOARD_MEDIA_FILE_EXTENSION() {return "mp3";}    
     public final String ONBOARD_MEDIA_ALBUM_ART_TYPE() {return "png";}
     public final double ONBOARD_MEDIA_MAX_VOLUME() {return 1;}
+
+    //CAN codes
+    public abstract int LEFT_BUTTON();
+    public abstract int RIGHT_BUTTON();
+    public abstract int UP_BUTTON();
+    public abstract int DOWN_BUTTON();
+    public abstract int OK_BUTTON();
 }
