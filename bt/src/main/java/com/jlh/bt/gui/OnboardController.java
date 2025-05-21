@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jlh.bt.onboard.media.MediaController;
 import com.jlh.bt.onboard.menu.MenuController;
-import com.jlh.bt.onboard.menu.MenuFactory;
+import com.jlh.bt.onboard.menu.MusicLoader;
 import com.jlh.bt.os.ShellController;
 
 import javafx.animation.Animation;
@@ -87,7 +87,7 @@ public class OnboardController {
     }
 
     public Image getAlbumArt() {
-        byte[] buffer = MenuFactory.getInstance().getAlbumArt(onboard.getCurrentTrack());
+        byte[] buffer = MusicLoader.getInstance().getAlbumArt(onboard.getCurrentTrack());
         if (buffer == null) {
             logger.trace("Unknown album art found for track " + onboard.getCurrentTrack() + ", reverting to default image");
             return unknownArtImage;

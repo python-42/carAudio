@@ -20,21 +20,21 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
-public class MenuFactory {
+public class MusicLoader {
 
-    private MenuFactory() {}
+    private MusicLoader() {}
 
-    private static MenuFactory instance = null;
+    private static MusicLoader instance = null;
 
-    public static MenuFactory getInstance() {
+    public static MusicLoader getInstance() {
         if (instance == null) {
-            instance = new MenuFactory();
+            instance = new MusicLoader();
         }
 
         return instance;
     }
 
-    private final Logger logger = LoggerFactory.getLogger(MenuFactory.class);
+    private final Logger logger = LoggerFactory.getLogger(MusicLoader.class);
     private final Constants CONSTANTS = Constants.getInstance();
 
     private final FileFilter isAudioFile = (file) -> {

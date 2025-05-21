@@ -9,7 +9,7 @@ public class MenuController {
     private Menu menu;
 
     public MenuController(File directory) {
-        menu = MenuFactory.getInstance().constructHighLevelMenu(directory).getKey();
+        menu = MusicLoader.getInstance().constructHighLevelMenu(directory).getKey();
     }
 
     public Menu getCurrentMenu() {
