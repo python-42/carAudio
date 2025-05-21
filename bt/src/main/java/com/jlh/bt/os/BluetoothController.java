@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.hypfvieh.bluetooth.DeviceManager;
 import com.github.hypfvieh.bluetooth.wrapper.BluetoothDevice;
-import com.jlh.bt.Constants;
+import com.jlh.bt.constants.Constants;
 import com.jlh.bt.onboard.media.Track;
 
 /**
@@ -41,12 +41,14 @@ public class BluetoothController {
     private final DeviceManager manager;
     private final DBusConnection conn;
     private final Logger logger;
+    private final Constants CONSTANTS;
 
     private Runnable connectionHandler;
     private Runnable disconnectionHandler;
     private int prevConnCount = 0;
 
     private BluetoothController() throws DBusException {
+        CONSTANTS = Constants.getInstance();
         logger = LoggerFactory.getLogger(this.getClass());
         manager = DeviceManager.createInstance(false);
         conn = manager.getDbusConnection();
@@ -133,8 +135,8 @@ public class BluetoothController {
             try {
                 operation.accept(
                     conn.getRemoteObject(
-                        Constants.BUSNAME, 
-                        Constants.COMMON_PATH_PREFIX + mac.replace(":", "_") + Constants.PLAYER_SUFFIX,
+                        CONSTANTS.BUSNAME(), 
+                        CONSTANTS.COMMON_PATH_PREFIX() + mac.replace(":", "_") + CONSTANTS.PLAYER_SUFFIX(),
                         MediaPlayer1.class
                     )
                 );
@@ -232,8 +234,8 @@ public class BluetoothController {
         logger.trace("Getting properties from " + mac);
 
         return conn.getRemoteObject(
-                Constants.BUSNAME, 
-                Constants.COMMON_PATH_PREFIX + mac.replace(':', '_') + Constants.PLAYER_SUFFIX,
+                CONSTANTS.BUSNAME(), 
+                CONSTANTS.COMMON_PATH_PREFIX() + mac.replace(':', '_') + CONSTANTS.PLAYER_SUFFIX(),
                     Properties.class
         );
     }

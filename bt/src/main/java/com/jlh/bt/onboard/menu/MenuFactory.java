@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jlh.bt.Constants;
+import com.jlh.bt.constants.Constants;
 import com.jlh.bt.onboard.media.Track;
 import com.jlh.bt.util.Pair;
 import com.mpatric.mp3agic.ID3v2;
@@ -35,13 +35,14 @@ public class MenuFactory {
     }
 
     private final Logger logger = LoggerFactory.getLogger(MenuFactory.class);
+    private final Constants CONSTANTS = Constants.getInstance();
 
     private final FileFilter isAudioFile = (file) -> {
         if (file.isDirectory()) {
             return false;
         }
         int index = file.getName().lastIndexOf('.');
-        return file.getName().substring(index).equals(Constants.ONBOARD_MEDIA_FILE_EXTENSION);
+        return file.getName().substring(index).equals(CONSTANTS.ONBOARD_MEDIA_FILE_EXTENSION());
     };
 
     private final HashMap<String, byte[]> albumArtCache = new HashMap<>();
@@ -120,7 +121,7 @@ public class MenuFactory {
 
                     if (
                         tags.getAlbumImage() != null 
-                        && tags.getAlbumImageMimeType().equalsIgnoreCase(Constants.ONBOARD_MEDIA_ALBUM_ART_TYPE)
+                        && tags.getAlbumImageMimeType().equalsIgnoreCase(CONSTANTS.ONBOARD_MEDIA_ALBUM_ART_TYPE())
                         && !albumArtCache.containsKey(tags.getArtist() + "-" + tags.getAlbum())
                     ) {
                         logger.debug("Album " + tags.getArtist() + "-" + tags.getAlbum() + " has art, adding to map.");

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.simple.SimpleLogger;
 
+import com.jlh.bt.constants.Constants;
 import com.jlh.bt.gui.GUIDriver;
 import com.jlh.bt.gui.PlayerController;
 import com.jlh.bt.onboard.media.MediaController;
@@ -22,13 +23,18 @@ public class Main {
     private final MediaController media;
     private final MenuController menu;
 
+    private final Constants CONSTANTS;
+
     public static void main(String[] args) {
+        
         new Main(args);
     }
 
     private Main(String[] args) {
-        System.setProperty(Constants.LOG_LEVEL_CLASSES_PROPERTY, Constants.LOG_LEVEL);
-        System.setProperty(SimpleLogger.LOG_FILE_KEY, Constants.LOG_FILE_PATH);
+        CONSTANTS = Constants.getInstance();
+
+        System.setProperty(CONSTANTS.LOG_LEVEL_CLASSES_PROPERTY(), CONSTANTS.LOG_LEVEL());
+        System.setProperty(SimpleLogger.LOG_FILE_KEY, CONSTANTS.LOG_FILE_PATH());
 
         logger = LoggerFactory.getLogger(this.getClass());
         logger.info("Execution started.");
@@ -48,7 +54,7 @@ public class Main {
         screen = GUIDriver.getUIController();
         logger.debug("GUIDriver successfully provided UI controller");
 
-        menu = new MenuController(new File(Constants.ONBOARD_MEDIA_DIRECTORY));
+        menu = new MenuController(new File(CONSTANTS.ONBOARD_MEDIA_DIRECTORY()));
         media = new MediaController();
 
         BluetoothController.getInstance().setDiscoverableState(false);

@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jlh.bt.Constants;
+import com.jlh.bt.constants.Constants;
 
 /**
  * Interact with the system via shell commands.
@@ -23,9 +23,11 @@ public class ShellController {
     }
 
     private final Logger logger;
+    private final Constants CONSTANTS;
 
     private ShellController() {
         logger = LoggerFactory.getLogger(this.getClass());
+        CONSTANTS = Constants.getInstance();
     }
 
     /**
@@ -34,7 +36,7 @@ public class ShellController {
     public void resetVolume() {
         logger.debug("Volume reset command issued.");
         try {
-            Runtime.getRuntime().exec("amixer -D pulse sset Master " + Constants.VOLUME_RESET_PERCENTAGE + "%");
+            Runtime.getRuntime().exec("amixer -D pulse sset Master " + CONSTANTS.VOLUME_RESET_PERCENTAGE() + "%");
         } catch (IOException e) {
             logger.error("IO exception occurred while resetting system volume", e);
         }
@@ -46,7 +48,7 @@ public class ShellController {
     public void incrementVolume() {
         logger.debug("Volume increment command issued.");
         try {
-            Runtime.getRuntime().exec("amixer -D pulse sset Master " + Constants.VOLUME_CHANGE_PERCENTAGE + "%+");
+            Runtime.getRuntime().exec("amixer -D pulse sset Master " + CONSTANTS.VOLUME_CHANGE_PERCENTAGE() + "%+");
         } catch (IOException e) {
             logger.error("IO exception occurred while incrementing system volume", e);
         }
@@ -58,7 +60,7 @@ public class ShellController {
     public void decrementVolume() {
         logger.debug("Volume decrement command issued");
         try {
-            Runtime.getRuntime().exec("amixer -D pulse sset Master " + Constants.VOLUME_CHANGE_PERCENTAGE + "%-");
+            Runtime.getRuntime().exec("amixer -D pulse sset Master " + CONSTANTS.VOLUME_CHANGE_PERCENTAGE() + "%-");
         } catch (IOException e) {
             logger.error("IO exception occurred while decrementing system volume", e);
         }

@@ -9,7 +9,7 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jlh.bt.Constants;
+import com.jlh.bt.constants.Constants;
 
 /**
  * Read and write values to the favorites file. 
@@ -26,11 +26,14 @@ public class FavoriteFileController {
         return INSTANCE;
     }
 
-    private final File file = new File(Constants.FAVORITE_FILE_NAME);
+    private final File file;
     private final Logger logger;
+    private final Constants CONSTANTS;
 
     private FavoriteFileController() {
         logger = LoggerFactory.getLogger(this.getClass());
+        CONSTANTS = Constants.getInstance();
+        file = new File(CONSTANTS.FAVORITE_FILE_NAME());
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.jlh.bt.onboard.media;
 
-import com.jlh.bt.Constants;
+import com.jlh.bt.constants.Constants;
 import com.jlh.bt.onboard.menu.Playlist;
 
 import javafx.scene.media.Media;
@@ -11,6 +11,11 @@ public class MediaController {
     
     private MediaPlayer player = null;
     private Playlist playlist = null;
+    private final Constants CONSTANTS;
+
+    public MediaController() {
+        CONSTANTS = Constants.getInstance();
+    }
 
     public void setPlaylist(Playlist playlist) {
         this.playlist = playlist;
@@ -81,7 +86,7 @@ public class MediaController {
 
         player.setOnEndOfMedia(this::endOfMediaHandler);
 
-        player.setVolume(Constants.ONBOARD_MEDIA_MAX_VOLUME);
+        player.setVolume(CONSTANTS.ONBOARD_MEDIA_MAX_VOLUME());
         player.setAutoPlay(true); // as soon as playback is ready we begin to play this track
     }
 
