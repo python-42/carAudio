@@ -3,15 +3,20 @@ package com.jlh.bt.onboard.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jlh.bt.constants.Constants;
+
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 
 public class Menu {
     
     private Menu parentMenu;
     private final List<MenuItem> items;
-    private final String title;
+    private final Label title;
 
     private int focus = 0;
 
@@ -24,7 +29,8 @@ public class Menu {
 
         this.items.get(focus).setFocused(true);
 
-        this.title = title;
+        this.title = new Label(title);
+        this.title.setTextFill(Paint.valueOf("ffffff"));
     }
 
     public void focusDown() {
@@ -67,15 +73,19 @@ public class Menu {
         VBox rtn = new VBox();
         ObservableList<Node> children = rtn.getChildren();
 
+        children.add(title);
+        children.add(new Separator());
+
         for (MenuItem item : items) {
             children.add(item.getUIComponent());
         }
 
+        rtn.setPrefWidth(Constants.getInstance().ONBOARD_MENU_WIDTH());
         return rtn;
     }
 
     public String getTitle() {
-        return title;
+        return title.getText();
     }
 
     /**

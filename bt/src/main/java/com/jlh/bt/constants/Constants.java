@@ -45,6 +45,7 @@ public abstract class Constants {
     //menu css
     public final String FOCUSED_CSS() {return "-fx-border-color: white";}
     public final String UNFOCUSED_CSS() {return "-fx-border-color: black";}
+    public final int ONBOARD_MENU_WIDTH() {return 440;}
 
     //onboard
     public abstract String ONBOARD_MEDIA_DIRECTORY();
