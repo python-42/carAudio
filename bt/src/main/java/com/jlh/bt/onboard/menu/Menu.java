@@ -27,7 +27,7 @@ public class Menu {
         this.title = title;
     }
 
-    public void focusUp() {
+    public void focusDown() {
         items.get(focus).setFocused(false);
         if (focus != items.size() - 1) {
             focus++;
@@ -35,7 +35,7 @@ public class Menu {
         items.get(focus).setFocused(true);
     }
 
-    public void focusDown() {
+    public void focusUp() {
         items.get(focus).setFocused(false);
         if (focus != 0) {
             focus--;
