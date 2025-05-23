@@ -37,6 +37,7 @@ public abstract class Constants {
     public final String ONBOARD_FXML_FILENAME() {return "onboard.fxml";}
     public abstract boolean IS_UI_FULLSCREEN();
     public final int MENU_TEXT_WIDTH() {return 25;}
+    public final int MUSIC_DETAIL_TEXT_WIDTH() {return 20;}
 
     //logging
     public final String LOG_LEVEL_CLASSES_PROPERTY() {return "org.slf4j.simpleLogger.log.com.jlh.bt";}

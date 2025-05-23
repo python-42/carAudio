@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,9 +9,9 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@onboard.css" xmlns="http://javafx.com/javafx/24" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jlh.bt.gui.OnboardController">
    
    <children>
-      <Label fx:id="artist" layoutX="10.0" layoutY="393.0" text="ARTIST" textFill="WHITE" />
-      <Label fx:id="album" layoutX="10.0" layoutY="431.0" text="ALBUM" textFill="WHITE" />
-      <Label fx:id="name" layoutX="10.0" layoutY="355.0" text="TRACK NAME" textFill="WHITE" />
+      <Pane fx:id="artist" layoutX="10.0" layoutY="393.0" />
+      <Pane fx:id="album" layoutX="10.0" layoutY="431.0" />
+      <Pane fx:id="name" layoutX="10.0" layoutY="355.0" />
       <ImageView fx:id="albumArt" fitHeight="350.0" fitWidth="350.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@unknown.png" />

@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jlh.bt.constants.Constants;
 import com.jlh.bt.onboard.media.MediaController;
 import com.jlh.bt.onboard.menu.MenuController;
 import com.jlh.bt.onboard.menu.MusicLoader;
@@ -17,11 +18,11 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class OnboardController {
@@ -29,14 +30,15 @@ public class OnboardController {
     @FXML private AnchorPane menuPane;
 
     @FXML private ImageView albumArt;
-    @FXML private Label album;
-    @FXML private Label name;
-    @FXML private Label artist;
+    @FXML private Pane album;
+    @FXML private Pane name;
+    @FXML private Pane artist;
 
     @FXML private ProgressBar volume;
     @FXML private ProgressBar trackProgress;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Constants CONSTANTS = Constants.getInstance();
     private MediaController onboard;
     private MenuController menu;
     private Image unknownArtImage;
@@ -60,9 +62,13 @@ public class OnboardController {
 
     public void updateTrack() {
         Platform.runLater(() -> {
-            artist.setText(onboard.getCurrentTrack().artist());
-            album.setText(onboard.getCurrentTrack().album());
-            name.setText(onboard.getCurrentTrack().name());
+            artist.getChildren().clear();
+            album.getChildren().clear();
+            name.getChildren().clear();
+
+            artist.getChildren().add(new ScrollingText(onboard.getCurrentTrack().artist(), CONSTANTS.MUSIC_DETAIL_TEXT_WIDTH(), true));
+            album.getChildren().add(new ScrollingText(onboard.getCurrentTrack().album(), CONSTANTS.MUSIC_DETAIL_TEXT_WIDTH(), true));
+            name.getChildren().add(new ScrollingText(onboard.getCurrentTrack().name(), CONSTANTS.MUSIC_DETAIL_TEXT_WIDTH(), true));
             albumArt.setImage(getAlbumArt());
             trackProgress.setProgress(0);
         });

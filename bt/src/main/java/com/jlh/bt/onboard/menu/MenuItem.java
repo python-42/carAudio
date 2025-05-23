@@ -32,7 +32,7 @@ public class MenuItem {
         HBox box = new HBox();
         box.setMaxWidth(Double.MAX_VALUE);
         
-        Label label = new ScrollingText(name, CONSTANTS.MENU_TEXT_WIDTH());
+        ScrollingText label = new ScrollingText(name, CONSTANTS.MENU_TEXT_WIDTH());
         label.setPadding(new Insets(0, 10, 0, 5));
 
         box.getChildren().add(label);
@@ -51,9 +51,12 @@ public class MenuItem {
     }
 
     public void setFocused(boolean focused) {
+        ScrollingText text = (ScrollingText) component.getChildren().get(0);
         if (focused) {
+            text.setScrollingEnabled(true);
             component.setStyle(CONSTANTS.FOCUSED_CSS());
         }else {
+            text.setScrollingEnabled(false);
             component.setStyle(CONSTANTS.UNFOCUSED_CSS());
         }
     }
