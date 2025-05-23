@@ -38,6 +38,7 @@ public abstract class Constants {
     public abstract boolean IS_UI_FULLSCREEN();
     public final int MENU_TEXT_WIDTH() {return 25;}
     public final int MUSIC_DETAIL_TEXT_WIDTH() {return 20;}
+    public final int MENU_MAX_VISIBLE_TRACK_COUNT() {return 10;}
 
     //logging
     public final String LOG_LEVEL_CLASSES_PROPERTY() {return "org.slf4j.simpleLogger.log.com.jlh.bt";}

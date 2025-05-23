@@ -70,8 +70,8 @@ public class Main {
 
     private void registerCanCallbacks() {
         CANDriver can = CANDriver.getInstance();
-        can.registerCallback(() -> menu.focusUp(), CONSTANTS.UP_BUTTON(), false);
-        can.registerCallback(() -> menu.focusDown(), CONSTANTS.DOWN_BUTTON(), false);
+        can.registerCallback(() -> {menu.focusUp(); onboardUI.updateMenu();}, CONSTANTS.UP_BUTTON(), false);
+        can.registerCallback(() -> {menu.focusDown(); onboardUI.updateMenu();}, CONSTANTS.DOWN_BUTTON(), false);
         can.registerCallback(() -> {menu.ascend(); onboardUI.updateMenu();}, CONSTANTS.LEFT_BUTTON(), false);
         can.registerCallback(() -> {menu.descend(); onboardUI.updateMenu();}, CONSTANTS.RIGHT_BUTTON(), false);
         can.registerCallback(() -> media.setPlaylist(menu.getPlaylist()), CONSTANTS.OK_BUTTON(), false);
