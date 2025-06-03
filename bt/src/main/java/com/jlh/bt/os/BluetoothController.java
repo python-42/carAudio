@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import com.github.hypfvieh.bluetooth.DeviceManager;
 import com.github.hypfvieh.bluetooth.wrapper.BluetoothDevice;
 import com.jlh.bt.constants.Constants;
-import com.jlh.bt.onboard.media.Track;
 
 /**
  * Interact with the bluetooth adapter and bluetooth devices using DBus.
@@ -37,6 +36,8 @@ public class BluetoothController {
         
         return INSTANCE;
     }
+
+    private final DBusMap<String, Object> errorMap;
 
     private final DeviceManager manager;
     private final DBusConnection conn;
@@ -58,12 +59,17 @@ public class BluetoothController {
         connectionHandler = () -> logger.warn("Connection event fired with no handler set.");
         disconnectionHandler = () -> logger.warn("Disconnection event fired with no handler set.");
 
+        Object[][] arr = new Object[3][3];
+        arr[0][0] = "Artist"; arr[0][1] = "";
+        arr[1][0] = "Album" ;  arr[1][1] = "";
+        arr[2][0] = "Title" ;  arr[2][1] = "";
+
+        errorMap = new DBusMap<>(arr);
+
         new Thread(
             () -> {while(true) {execute();}},
             "Bluetooth connection listener thread"
-        ).start();
-
-        
+        ).start();        
     }
 
     public void setOnConnectionEvent(Runnable handler) {
@@ -268,13 +274,13 @@ public class BluetoothController {
         }
     }
 
-    public Track getCurrentTrack() {
+    private DBusMap<String, Object> getBusMap() {
         Properties props;
         try {
             props = getProperties();
 
             if(props == null) {
-                return Track.BLANK;
+                return errorMap;
             }
 
             DBusMap<String, Object> map = props.Get("org.bluez.MediaPlayer1", "Track");   
@@ -283,23 +289,27 @@ public class BluetoothController {
                 logger.trace("=====>" + s);
             }
             
-            return new Track(
-                (String) map.get("Title"),
-                (String) map.get("Artist"), 
-                (String) map.get("Album"),
-                "",
-                null
-            );
-
-        }catch (NumberFormatException e) {
-            logger.error("Number format exception occurred while trying to parse track duration.", e);
-            return Track.ERROR;
+            return map;
 
         }catch (Exception e) {
             logger.debug("Exception occurred while trying to get track information.", e);
-            return Track.ERROR;
+            return errorMap;
         }
     }
+
+    public String getSongName() {
+        return (String)getBusMap().get("Title");
+    }
+
+    public String getArtistName() {
+        return (String)getBusMap().get("Artist");
+    }
+
+    public String getAlbumName() {
+        return (String)getBusMap().get("Album");
+    }
+
+    
 
     public int getCurrentPosition() {
         Properties props;

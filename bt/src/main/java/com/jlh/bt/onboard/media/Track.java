@@ -4,9 +4,7 @@ import java.io.File;
 
 public record Track(int id, String name, String artist, String album, String genre, File file) {
 
-    public static final Track ERROR = new Track(-1, "ERROR", "ERROR", "ERROR", "ERROR", null);
-    public static final Track BLANK = new Track(0, "", "", "", "", null);
-    public static final Track NOTHING = new Track(0, "No track playing", "", "", "", null);
+    public static final Track NOTHING = new Track(-1, "No track playing", "", "", "", null);
 
     @Override
     public String toString() {

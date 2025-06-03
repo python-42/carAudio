@@ -38,9 +38,9 @@ public class BtPlayerController {
                 "Onboard Media;";
         }));
 
-        artist.textProperty().bind(Bindings.createStringBinding(() -> bt.getCurrentTrack().artist()));
-        album.textProperty().bind(Bindings.createStringBinding(() -> bt.getCurrentTrack().album()));
-        name.textProperty().bind(Bindings.createStringBinding(() -> bt.getCurrentTrack().name()));
+        artist.textProperty().bind(Bindings.createStringBinding(() -> bt.getArtistName()));
+        album.textProperty().bind(Bindings.createStringBinding(() -> bt.getAlbumName()));
+        name.textProperty().bind(Bindings.createStringBinding(() -> bt.getSongName()));
 
         volume.textProperty().bind(Bindings.createStringBinding(() -> ShellController.getInstance().getCurrentVolume() + ""));
         volumeBar.progressProperty().bind(Bindings.createDoubleBinding(() -> ShellController.getInstance().getCurrentVolume() / 100.0));
