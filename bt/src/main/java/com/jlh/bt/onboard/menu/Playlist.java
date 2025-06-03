@@ -31,6 +31,10 @@ public class Playlist {
         }
     }
 
+    public void sortSongs() {
+        songs.sort(new Track.TrackComparator());
+    }
+
     public void toggleShuffle() {
         if (isShuffled) {
             isShuffled = false;

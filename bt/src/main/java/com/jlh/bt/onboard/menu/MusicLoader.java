@@ -2,7 +2,6 @@ package com.jlh.bt.onboard.menu;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,10 +15,9 @@ import org.slf4j.LoggerFactory;
 import com.jlh.bt.constants.Constants;
 import com.jlh.bt.onboard.media.Track;
 import com.jlh.bt.util.Pair;
+import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v2;
-import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
 
 public class MusicLoader {
 
@@ -81,6 +79,7 @@ public class MusicLoader {
 
         for (Entry<String, Playlist> entry : map.entrySet()) {
             Playlist playlist = entry.getValue();
+            playlist.sortSongs();
 
             //create menu displaying an artists discography or all songs in a genre
             List<MenuItem> subMenuItems = new ArrayList<>(playlist.getTrackCount());
@@ -121,7 +120,25 @@ public class MusicLoader {
                 metadata = new Mp3File(f);
                 if (metadata.hasId3v2Tag()) {
                     ID3v2 tags = metadata.getId3v2Tag();
-                    Track newTrack = new Track(id, tags.getTitle(), tags.getArtist(), tags.getAlbum(), convertGenreIdToString(tags.getGenre()), f);
+                    
+                    //for some reason this object is the only one which will do the release year properly
+                    int year = 0;
+                    try {
+                        ID3v1 yearTag = metadata.getId3v1Tag();
+                        year = parseNumericalString(yearTag.getYear());
+                    }catch(Exception e) {
+                        logger.info("Audio file " + f.getName() + " has issue with release year tagging. Using default year value.");
+                    }
+                    Track newTrack = new Track(
+                        id, 
+                        tags.getTitle(), 
+                        tags.getArtist(), 
+                        tags.getAlbum(), 
+                        convertGenreIdToString(tags.getGenre()),
+                        parseNumericalString(tags.getTrack()),
+                        year,
+                        f
+                    );
                     id++;
 
                     trackList.add(newTrack);
@@ -140,7 +157,7 @@ public class MusicLoader {
                 }else {
                     logger.info("Audio file " + f.getName() + " doesn't have Id3v2 tags, skipping file.");
                 }
-            } catch (UnsupportedTagException | InvalidDataException | IOException e) {
+            } catch (Exception e) {
                 logger.error("Encountered exception while parsing tags of audio file " + f.getName(), e);
             }
         }
@@ -148,6 +165,14 @@ public class MusicLoader {
         logger.info(trackList.size() + " audio files loaded.");
 
         return trackList;
+    }
+
+    private int parseNumericalString(String str) {
+        try {
+            return Integer.parseInt(str);
+        }catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
     private void updatePlaylistMap(HashMap<String, Playlist> map, String key, Track track) {

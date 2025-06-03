@@ -1,5 +1,8 @@
 package com.jlh.bt.onboard.media;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jlh.bt.constants.Constants;
 import com.jlh.bt.onboard.menu.Playlist;
 
@@ -17,6 +20,8 @@ public class MediaController {
     
     private final Constants CONSTANTS;
     private final Runnable songChangeCallback;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public MediaController(Runnable songChangeCallback) {
         this.songChangeCallback = songChangeCallback;
@@ -100,6 +105,8 @@ public class MediaController {
 
         player.setVolume(CONSTANTS.ONBOARD_MEDIA_MAX_VOLUME());
         player.setAutoPlay(true); // as soon as playback is ready we begin to play this track
+        
+        logger.trace(media.toStringLong() + "\n");
 
         songChangeCallback.run();
     }
