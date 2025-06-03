@@ -42,4 +42,64 @@ class DevConstants extends Constants {
 
     @Override
     public int OK_BUTTON() {return 57;}
+
+    @Override
+    public int PREV_BUTTON() {return 16;}
+
+    @Override
+    public int SKIP_BUTTON() {return 18;}
+
+    @Override
+    public int VOLUME_DECREMENT_BUTTON() {return 12;}
+
+    @Override
+    public int VOLUME_INCREMENT_BUTTON() {return 13;}
+
+    @Override
+    public int MUTE_BUTTON() {return 50;}
+
+    @Override
+    public int SHUFFLE_BUTTON() {return 19;}
+
+    @Override
+    public int EQUALIZER_BUTTON() {return -1;}
+
+    @Override
+    public int RADIO_BUTTON() {return -1;}
+
+    @Override
+    public int MEDIA_BUTTON() {return -1;}
+
+    @Override
+    public int PHONE_BUTTON() {return -1;}
+
+    @Override
+    public int BUTTON_1() {return 2;}
+
+    @Override
+    public int BUTTON_2() {return 3;}
+
+    @Override
+    public int BUTTON_3() {return 4;}
+
+    @Override
+    public int BUTTON_4() {return 5;}
+
+    @Override
+    public int BUTTON_5() {return 6;}
+
+    @Override
+    public int BUTTON_6() {return 7;}
+
+    @Override
+    public int BUTTON_7() {return 8;}
+
+    @Override
+    public int BUTTON_8() {return 9;}
+
+    @Override
+    public int BUTTON_9() {return 10;}
+
+    @Override
+    public int BUTTON_0() {return 11;}
 }

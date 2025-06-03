@@ -41,4 +41,64 @@ class ProdConstants extends Constants {
 
     @Override
     public int OK_BUTTON() {return -1;}
+
+    @Override
+    public int PREV_BUTTON() {return -1;}
+
+    @Override
+    public int SKIP_BUTTON() {return -1;}
+
+    @Override
+    public int VOLUME_DECREMENT_BUTTON() {return -1;}
+
+    @Override
+    public int VOLUME_INCREMENT_BUTTON() {return -1;}
+
+    @Override
+    public int MUTE_BUTTON() {return -1;}
+
+    @Override
+    public int SHUFFLE_BUTTON() {return -1;}
+
+    @Override
+    public int EQUALIZER_BUTTON() {return -1;}
+
+    @Override
+    public int RADIO_BUTTON() {return -1;}
+
+    @Override
+    public int MEDIA_BUTTON() {return -1;}
+
+    @Override
+    public int PHONE_BUTTON() {return -1;}
+
+    @Override
+    public int BUTTON_1() {return -1;}
+
+    @Override
+    public int BUTTON_2() {return -1;}
+
+    @Override
+    public int BUTTON_3() {return -1;}
+
+    @Override
+    public int BUTTON_4() {return -1;}
+
+    @Override
+    public int BUTTON_5() {return -1;}
+
+    @Override
+    public int BUTTON_6() {return -1;}
+
+    @Override
+    public int BUTTON_7() {return -1;}
+
+    @Override
+    public int BUTTON_8() {return -1;}
+
+    @Override
+    public int BUTTON_9() {return -1;}
+
+    @Override
+    public int BUTTON_0() {return -1;}
 }

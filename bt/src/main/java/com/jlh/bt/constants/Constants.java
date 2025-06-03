@@ -57,9 +57,36 @@ public abstract class Constants {
     public final double ONBOARD_MEDIA_MAX_VOLUME() {return 1;}
 
     //CAN codes
+    //steering wheel
     public abstract int LEFT_BUTTON();
     public abstract int RIGHT_BUTTON();
     public abstract int UP_BUTTON();
     public abstract int DOWN_BUTTON();
-    public abstract int OK_BUTTON();
+    public abstract int OK_BUTTON(); 
+    public abstract int SKIP_BUTTON();
+    public abstract int PREV_BUTTON();
+    public abstract int VOLUME_INCREMENT_BUTTON();
+    public abstract int VOLUME_DECREMENT_BUTTON();
+    public abstract int MUTE_BUTTON();
+
+    //center control panel
+    public abstract int SHUFFLE_BUTTON();
+    public abstract int EQUALIZER_BUTTON();
+    public abstract int RADIO_BUTTON();
+    //secondary mute button - need to determine if this has a different ID or not
+    public abstract int MEDIA_BUTTON();
+    //clock button retains OEM functionality
+    public abstract int PHONE_BUTTON();
+    //menu button retains OEM functionality
+
+    public abstract int BUTTON_1();
+    public abstract int BUTTON_2();
+    public abstract int BUTTON_3();
+    public abstract int BUTTON_4();
+    public abstract int BUTTON_5();
+    public abstract int BUTTON_6();
+    public abstract int BUTTON_7();
+    public abstract int BUTTON_8();
+    public abstract int BUTTON_9();
+    public abstract int BUTTON_0();
 }
