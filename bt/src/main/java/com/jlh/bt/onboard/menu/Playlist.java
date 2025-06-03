@@ -26,13 +26,17 @@ public class Playlist {
         songs.addAll(list);
 
         order = new ArrayList<>(getTrackCount());
-        setNaturalOrder();
+        for (int i = 0; i < getTrackCount(); i++) {
+            order.add(i);
+        }
     }
 
     public void toggleShuffle() {
         if (isShuffled) {
+            isShuffled = false;
             setNaturalOrder();
         }else {
+            isShuffled = true;
             shuffle();
         }
     }
@@ -41,10 +45,12 @@ public class Playlist {
      * Set the order of the tracks into their natural order (0, 1, 2, etc)
      */
     private void setNaturalOrder() {
+        int id = songs.get(order.get(currentTrack)).id();
         order.clear();
         for (int i = 0; i < getTrackCount(); i++) {
             order.add(i);
         }
+        fixCurrentTrack(id);
     }
 
     /**
@@ -59,6 +65,22 @@ public class Playlist {
                 (int)(Math.random() * (temp.size()-1))
             ));
         }
+        fixCurrentTrack(songs.get(currentTrack).id());
+    }
+
+    /**
+     * After shuffling or unshuffling, the currentTrack variable will no longer
+     * represent the position of the currently playing track. We restore it to the
+     * correct value with this method.
+     * 
+     * @param trackID ID of the currently playing track.
+     */
+    private void fixCurrentTrack(int trackID) {
+        for (int i = 0; i < getTrackCount(); i++) {
+            if (songs.get(order.get(i)).id() == trackID) {
+                currentTrack = i;
+            }
+        }
     }
 
     private List<Integer> copyList(List<Integer> toCopy) {
@@ -71,10 +93,12 @@ public class Playlist {
     }
 
     /**
-     * Move to the previous track. If at the first track, nothing happens.
+     * Move to the previous track. If at the first track, loop back to the end.
      */
     public void previousTrack() {
-        if (currentTrack != 0) {
+        if (currentTrack == 0) {
+            currentTrack = getTrackCount() -1;
+        }else {
             currentTrack--;
         }
     }

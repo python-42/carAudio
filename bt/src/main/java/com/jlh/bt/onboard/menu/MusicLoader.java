@@ -114,13 +114,15 @@ public class MusicLoader {
 
         List<Track> trackList = new ArrayList<>(audioFiles.length);
 
+        int id = 0;
         for (File f : audioFiles) {
             Mp3File metadata;
             try {
                 metadata = new Mp3File(f);
                 if (metadata.hasId3v2Tag()) {
                     ID3v2 tags = metadata.getId3v2Tag();
-                    Track newTrack = new Track(tags.getTitle(), tags.getArtist(), tags.getAlbum(), convertGenreIdToString(tags.getGenre()), f);
+                    Track newTrack = new Track(id, tags.getTitle(), tags.getArtist(), tags.getAlbum(), convertGenreIdToString(tags.getGenre()), f);
+                    id++;
 
                     trackList.add(newTrack);
                     updatePlaylistMap(artistPlaylistMap, newTrack.artist(), newTrack);
