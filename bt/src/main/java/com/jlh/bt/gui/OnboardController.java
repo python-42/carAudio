@@ -34,6 +34,7 @@ public class OnboardController {
     @FXML private Pane name;
     @FXML private Pane artist;
 
+    @FXML private ImageView shuffle;
     @FXML private ProgressBar volume;
     @FXML private ProgressBar trackProgress;
 
@@ -72,6 +73,10 @@ public class OnboardController {
             albumArt.setImage(getAlbumArt());
             trackProgress.setProgress(0);
         });
+    }
+
+    public void toggleShuffle() {
+        Platform.runLater(() -> shuffle.setVisible(!shuffle.isVisible()));
     }
 
     private void startTrackProgressUpdater() {

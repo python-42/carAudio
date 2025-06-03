@@ -80,7 +80,13 @@ public class MediaController {
     }
 
     public void toggleShuffle() {
-        playlist.toggleShuffle();
+        if (playlist != null) {
+            playlist.toggleShuffle();
+        }
+    }
+
+    public boolean playlistExists() {
+        return playlist != null;
     }
 
     private void createNewMediaPlayer(Track media) {

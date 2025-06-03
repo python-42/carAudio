@@ -1,6 +1,7 @@
 package com.jlh.bt.onboard.menu;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.jlh.bt.onboard.media.Track;
@@ -50,14 +51,23 @@ public class Playlist {
      * Set the order of the tracks into a random order.
      */
     private void shuffle() {
-        List<Integer> temp = List.copyOf(order);
+        List<Integer> temp = copyList(order);
 
         order.clear();
         for (int i = 0; i < getTrackCount(); i++) {
             order.add(temp.remove(
-                (int)(Math.random() * getTrackCount())
+                (int)(Math.random() * (temp.size()-1))
             ));
         }
+    }
+
+    private List<Integer> copyList(List<Integer> toCopy) {
+        List<Integer> temp = new LinkedList<>();
+        for (int i : toCopy) {
+            temp.add(i);
+        }
+
+        return temp;
     }
 
     /**

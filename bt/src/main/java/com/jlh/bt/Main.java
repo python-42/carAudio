@@ -75,6 +75,16 @@ public class Main {
         can.registerCallback(() -> {menu.ascend(); onboardUI.updateMenu();}, CONSTANTS.LEFT_BUTTON(), false);
         can.registerCallback(() -> {menu.descend(); onboardUI.updateMenu();}, CONSTANTS.RIGHT_BUTTON(), false);
         can.registerCallback(() -> media.setPlaylist(menu.getPlaylist()), CONSTANTS.OK_BUTTON(), false);
+
+        can.registerCallback(() -> media.fastForward(), CONSTANTS.SKIP_BUTTON(), false);
+        can.registerCallback(() -> media.previous(), CONSTANTS.PREV_BUTTON(), false);
+        
+        can.registerCallback(() -> {
+            if (media.playlistExists()) {
+                media.toggleShuffle(); 
+                onboardUI.toggleShuffle();
+            }
+        }, CONSTANTS.SHUFFLE_BUTTON(), false);
     }
 
     private void bluetoothInit() {

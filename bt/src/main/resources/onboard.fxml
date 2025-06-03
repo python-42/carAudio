@@ -15,10 +15,17 @@
       <ImageView fx:id="albumArt" fitHeight="350.0" fitWidth="350.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@unknown.png" />
-         </image></ImageView>
+         </image>
+      </ImageView>
       <ProgressBar fx:id="trackProgress" layoutX="5.0" layoutY="350.0" prefHeight="5.0" prefWidth="350.0" progress="0.0" />
       <ProgressBar fx:id="volume" layoutX="5.0" layoutY="3.0" prefHeight="5.0" prefWidth="350.0" progress="0.0" />
       <AnchorPane fx:id="menuPane" layoutX="360.0" prefHeight="480.0" prefWidth="440.0" />
+
+      <ImageView fx:id="shuffle" visible="false" fitHeight="20.0" fitWidth="20.0" layoutX="335.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" >
+         <image>
+            <Image url="@shuffle.png" />
+         </image>
+      </ImageView>
    </children>
 
 </Pane>
