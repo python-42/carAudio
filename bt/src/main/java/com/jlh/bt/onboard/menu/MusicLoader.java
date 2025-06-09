@@ -3,9 +3,10 @@ package com.jlh.bt.onboard.menu;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.function.Function;
 
@@ -50,8 +51,8 @@ public class MusicLoader {
     };
 
     private final HashMap<String, byte[]> albumArtCache = new HashMap<>();
-    private final HashMap<String, Playlist> artistPlaylistMap = new HashMap<>();
-    private final HashMap<String, Playlist> genrePlaylistMap = new HashMap<>();
+    private final SortedMap<String, Playlist> artistPlaylistMap = new TreeMap<>();
+    private final SortedMap<String, Playlist> genrePlaylistMap = new TreeMap<>();
     
     public Pair<Menu, Playlist> constructHighLevelMenu(File directory) {
         Playlist allSongs = new Playlist("All Songs", loadMusicFiles(directory));
@@ -79,7 +80,7 @@ public class MusicLoader {
      * @param title the title of the parent menu
      * @return Menu object with the provided title
      */
-    private Menu getCategoryMenu(HashMap<String, Playlist> map, String title, Function<Track, String> trackName) {
+    private Menu getCategoryMenu(SortedMap<String, Playlist> map, String title, Function<Track, String> trackName) {
         List<MenuItem> menuItems = new ArrayList<>(map.size());
 
         for (Entry<String, Playlist> entry : map.entrySet()) {
@@ -137,8 +138,6 @@ public class MusicLoader {
                 i++;
             }
         }
-
-        Arrays.sort(audioFiles);
 
         List<Track> trackList = new ArrayList<>(audioFiles.length);
         logger.info(audioFiles.length + " mp3 files found.");
@@ -225,7 +224,7 @@ public class MusicLoader {
         }
     }
 
-    private void updatePlaylistMap(HashMap<String, Playlist> map, String key, Track track) {
+    private void updatePlaylistMap(SortedMap<String, Playlist> map, String key, Track track) {
         if (!map.containsKey(key)) {
             logger.debug("New track list created for " + key);
             map.put(key, new Playlist(key, List.of(track)));
