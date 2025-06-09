@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jlh.bt.constants.Constants;
+import com.jlh.bt.gui.NotificationSender;
 import com.jlh.bt.onboard.media.Track;
 import com.jlh.bt.util.Pair;
 import com.mpatric.mp3agic.ID3v1;
@@ -42,6 +43,10 @@ public class MusicLoader {
         }
         int index = file.getName().lastIndexOf('.');
         return file.getName().substring(index+1).equals(CONSTANTS.ONBOARD_MEDIA_FILE_EXTENSION());
+    };
+
+    private final FileFilter isDirectory = (file) -> {
+        return file.isDirectory();
     };
 
     private final HashMap<String, byte[]> albumArtCache = new HashMap<>();
@@ -102,18 +107,46 @@ public class MusicLoader {
         return menu;
     }
 
+    private void getMusicFilesRecursive(File directory, List<File[]> files) {
+        files.add(directory.listFiles(isAudioFile));
+
+        for (File dir : directory.listFiles(isDirectory)) {
+            getMusicFilesRecursive(dir, files);
+        }
+    }
+
     private List<Track> loadMusicFiles(File directory) {
         //clear maps of any stale data
         albumArtCache.clear();
         artistPlaylistMap.clear();
         genrePlaylistMap.clear();
 
-        File[] audioFiles = directory.listFiles(isAudioFile);
+        List<File[]> files = new ArrayList<>();
+        getMusicFilesRecursive(directory, files);
+        
+        int size = 0;
+        for (File[] f : files) {
+            size += f.length;
+        }
+
+        File[] audioFiles = new File[size];
+        int i = 0;
+        for (File[] arr : files) {
+            for (File f : arr) {
+                audioFiles[i] = f;
+                i++;
+            }
+        }
+
         Arrays.sort(audioFiles);
 
         List<Track> trackList = new ArrayList<>(audioFiles.length);
+        logger.info(audioFiles.length + " mp3 files found.");
+
+        HashMap<String, Object> albumTable = new HashMap<>(); //take advantage of hashmap constant time reads to store album names
 
         int id = 0;
+        int albumArt = 0;
         for (File f : audioFiles) {
             Mp3File metadata;
             try {
@@ -145,12 +178,16 @@ public class MusicLoader {
                     updatePlaylistMap(artistPlaylistMap, newTrack.artist(), newTrack);
                     updatePlaylistMap(genrePlaylistMap, newTrack.genre(), newTrack);
 
+                    if (albumTable.get(newTrack.album()) == null) {
+                        albumTable.put(newTrack.album(), new Object());
+                    }
+
                     if (
                         tags.getAlbumImage() != null 
-                        && tags.getAlbumImageMimeType().equalsIgnoreCase(CONSTANTS.ONBOARD_MEDIA_ALBUM_ART_TYPE())
                         && !albumArtCache.containsKey(tags.getArtist() + "-" + tags.getAlbum())
                     ) {
                         logger.debug("Album " + tags.getArtist() + "-" + tags.getAlbum() + " has art, adding to map.");
+                        albumArt++;
                         albumArtCache.put(tags.getArtist() + "-" + tags.getAlbum(), tags.getAlbumImage());
                     }
 
@@ -162,7 +199,20 @@ public class MusicLoader {
             }
         }
 
-        logger.info(trackList.size() + " audio files loaded.");
+        logger.info(trackList.size() + " audio files loaded successfully.");
+
+        NotificationSender.sendInfoNotification(
+            "File loading complete", 
+            String.format(
+                "%d files of %d successfully loaded.\nArtists: %d\nGenres: %d\nAlbums: %d (%d cover art images)", 
+                trackList.size(), 
+                audioFiles.length, 
+                artistPlaylistMap.size(), 
+                genrePlaylistMap.size(),
+                albumTable.size(), 
+                albumArt
+            )
+        );
 
         return trackList;
     }

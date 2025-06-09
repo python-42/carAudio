@@ -53,7 +53,6 @@ public abstract class Constants {
     //onboard
     public abstract String ONBOARD_MEDIA_DIRECTORY();
     public final String ONBOARD_MEDIA_FILE_EXTENSION() {return "mp3";}    
-    public final String ONBOARD_MEDIA_ALBUM_ART_TYPE() {return "image/png";}
     public final double ONBOARD_MEDIA_MAX_VOLUME() {return 1;}
 
     //CAN codes
