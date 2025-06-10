@@ -9,6 +9,7 @@ import com.jlh.bt.constants.Constants;
 import com.jlh.bt.onboard.media.MediaController;
 import com.jlh.bt.onboard.menu.MenuController;
 import com.jlh.bt.onboard.menu.MusicLoader;
+import com.jlh.bt.onboard.menu.MusicLoader.TrackStats;
 import com.jlh.bt.os.ShellController;
 
 import javafx.animation.Animation;
@@ -18,6 +19,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,13 +32,18 @@ public class OnboardController {
     @FXML private AnchorPane menuPane;
 
     @FXML private ImageView albumArt;
-    @FXML private Pane album;
     @FXML private Pane name;
     @FXML private Pane artist;
 
     @FXML private ImageView shuffle;
     @FXML private ProgressBar volume;
     @FXML private ProgressBar trackProgress;
+
+    @FXML private Label trackCount;
+    @FXML private Label artistCount;
+    @FXML private Label albumCount;
+    @FXML private Label coverCount;
+    @FXML private Label genreCount;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final Constants CONSTANTS = Constants.getInstance();
@@ -52,6 +59,7 @@ public class OnboardController {
         startTrackProgressUpdater();
         updateMenu();
         updateTrack();
+        setTrackStats(MusicLoader.getInstance().getStats());
     }
 
     public void updateMenu() {
@@ -64,11 +72,9 @@ public class OnboardController {
     public void updateTrack() {
         Platform.runLater(() -> {
             artist.getChildren().clear();
-            album.getChildren().clear();
             name.getChildren().clear();
 
             artist.getChildren().add(new ScrollingText(onboard.getCurrentTrack().artist(), CONSTANTS.MUSIC_DETAIL_TEXT_WIDTH(), true));
-            album.getChildren().add(new ScrollingText(onboard.getCurrentTrack().album(), CONSTANTS.MUSIC_DETAIL_TEXT_WIDTH(), true));
             name.getChildren().add(new ScrollingText(onboard.getCurrentTrack().name(), CONSTANTS.MUSIC_DETAIL_TEXT_WIDTH(), true));
             albumArt.setImage(getAlbumArt());
             trackProgress.setProgress(0);
@@ -77,6 +83,16 @@ public class OnboardController {
 
     public void toggleShuffle() {
         Platform.runLater(() -> shuffle.setVisible(!shuffle.isVisible()));
+    }
+
+    private void setTrackStats(TrackStats stats) {
+        Platform.runLater(() -> {
+            trackCount.setText(trackCount.getText() + stats.trackCount());
+            artistCount.setText(artistCount.getText() + stats.artistCount());
+            albumCount.setText(albumCount.getText() + stats.albumCount());
+            coverCount.setText(coverCount.getText() + stats.coverCount());
+            genreCount.setText(genreCount.getText() + stats.genreCount());
+        });
     }
 
     private void startTrackProgressUpdater() {

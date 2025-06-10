@@ -23,6 +23,8 @@ import com.mpatric.mp3agic.Mp3File;
 
 public class MusicLoader {
 
+    public record TrackStats(int trackCount, int artistCount, int albumCount, int coverCount, int genreCount) {}
+
     private MusicLoader() {}
 
     private static MusicLoader instance = null;
@@ -34,6 +36,8 @@ public class MusicLoader {
 
         return instance;
     }
+
+    private TrackStats stats = null;
 
     private final Logger logger = LoggerFactory.getLogger(MusicLoader.class);
     private final Constants CONSTANTS = Constants.getInstance();
@@ -53,6 +57,10 @@ public class MusicLoader {
     private final HashMap<String, byte[]> albumArtCache = new HashMap<>();
     private final SortedMap<String, Playlist> artistPlaylistMap = new TreeMap<>();
     private final SortedMap<String, Playlist> genrePlaylistMap = new TreeMap<>();
+
+    public TrackStats getStats() {
+        return stats;
+    }
     
     public Pair<Menu, Playlist> constructHighLevelMenu(File directory) {
         Playlist allSongs = new Playlist("All Songs", loadMusicFiles(directory));
@@ -211,6 +219,14 @@ public class MusicLoader {
                 albumTable.size(), 
                 albumArt
             )
+        );
+
+        stats = new TrackStats(
+            trackList.size(), 
+            artistPlaylistMap.size(), 
+            albumTable.size(), 
+            albumArt,
+            genrePlaylistMap.size()
         );
 
         return trackList;

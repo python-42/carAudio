@@ -36,11 +36,11 @@ public abstract class Constants {
     public final String PLAYER_FXML_FILENAME() {return "player.fxml";}
     public final String ONBOARD_FXML_FILENAME() {return "onboard.fxml";}
     public abstract boolean IS_UI_FULLSCREEN();
-    public final int MENU_TEXT_WIDTH() {return 25;}
-    public final int MUSIC_DETAIL_TEXT_WIDTH() {return 20;}
-    public final int MENU_MAX_VISIBLE_TRACK_COUNT() {return 10;}
+    public final int MENU_TEXT_WIDTH() {return 34;}
+    public final int MUSIC_DETAIL_TEXT_WIDTH() {return 11;}
+    public final int MENU_MAX_VISIBLE_TRACK_COUNT() {return 13;}
 
-    public final int MUSIC_SPOTLIGHT_TEXT_WIDTH() {return 15;}
+    public final int MUSIC_SPOTLIGHT_TEXT_WIDTH() {return 16;}
 
     //logging
     public final String LOG_LEVEL_CLASSES_PROPERTY() {return "org.slf4j.simpleLogger.log.com.jlh.bt";}
@@ -50,7 +50,7 @@ public abstract class Constants {
     //menu css
     public final String FOCUSED_CSS() {return "-fx-border-color: white";}
     public final String UNFOCUSED_CSS() {return "-fx-border-color: black";}
-    public final int ONBOARD_MENU_WIDTH() {return 440;}
+    public final int ONBOARD_MENU_WIDTH() {return 600;}
 
     //onboard
     public abstract String ONBOARD_MEDIA_DIRECTORY();

@@ -1,9 +1,9 @@
 Label {
-    -fx-font-size: 30px;
+    -fx-font: 28px monospace;
 }
 
 ScrollingText {
-    -fx-font-size: 30px;
+    -fx-font: 28px monospace;
 }
 
 ProgressBar {

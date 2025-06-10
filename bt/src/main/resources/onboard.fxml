@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@onboard.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jlh.bt.gui.OnboardController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@onboard.css" xmlns="http://javafx.com/javafx/24" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jlh.bt.gui.OnboardController">
    
    <children>
-      <Pane fx:id="artist" layoutX="10.0" layoutY="393.0" />
-      <Pane fx:id="album" layoutX="10.0" layoutY="431.0" />
-      <Pane fx:id="name" layoutX="10.0" layoutY="355.0" />
-      <ImageView fx:id="albumArt" fitHeight="350.0" fitWidth="350.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+      <Pane layoutX="0.0" layoutY="210.0" prefWidth="200.0" style="-fx-border-color: white;">
+         <children>
+         <Pane fx:id="artist" layoutX="5.0" layoutY="30.0" />
+         <Pane fx:id="name" layoutX="5.0" />
+         </children>
+      </Pane>
+      <ImageView fx:id="albumArt" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@unknown.png" />
          </image>
       </ImageView>
-      <ProgressBar fx:id="trackProgress" layoutX="5.0" layoutY="350.0" prefHeight="5.0" prefWidth="350.0" progress="0.0" />
-      <ProgressBar fx:id="volume" layoutX="5.0" layoutY="3.0" prefHeight="5.0" prefWidth="350.0" progress="0.0" />
-      <AnchorPane fx:id="menuPane" layoutX="360.0" prefHeight="480.0" prefWidth="440.0" />
+      <ProgressBar fx:id="trackProgress" layoutY="200.0" prefHeight="5.0" prefWidth="200.0" progress="0.0" />
+      <ProgressBar fx:id="volume" prefHeight="5.0" prefWidth="200.0" progress="0.0" />
+      <AnchorPane fx:id="menuPane" layoutX="200.0" prefHeight="480.0" prefWidth="600.0" />
 
-      <ImageView fx:id="shuffle" visible="false" fitHeight="20.0" fitWidth="20.0" layoutX="335.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" >
+      <ImageView fx:id="shuffle" fitHeight="20.0" fitWidth="20.0" layoutX="180.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@shuffle.png" />
          </image>
       </ImageView>
+      <VBox layoutY="275.0" prefWidth="200.0" spacing="2.5" style="-fx-border-color: white;">
+         <children>
+            <Label fx:id="trackCount"  text="Tracks: " />
+            <Label fx:id="artistCount" text="Artists:" />
+            <Label fx:id="albumCount"  text="Albums: " />
+            <Label fx:id="coverCount"  text="Covers: " />
+            <Label fx:id="genreCount"  text="Genres: " />
+         </children>
+         <padding>
+            <Insets left="5.0" />
+         </padding></VBox>
    </children>
 
 </Pane>
