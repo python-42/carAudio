@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.jlh.bt.constants.Constants;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,9 +18,10 @@ public class GUIDriver extends Application {
     private static volatile BtPlayerController btController = null;
     private static volatile OnboardController onboardController  = null;
 
-    private Stage stage;
-    private Scene musicDetail;
-    private Scene onboardMenu;
+    private static Stage stage;
+    private static Scene musicDetail;
+    private static Scene onboardMenu;
+    private static boolean musicDetailShown = false;
 
     public GUIDriver(String[] args) {
         Application.launch(args);
@@ -33,7 +35,7 @@ public class GUIDriver extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         logger.info("UI resource loading started.");
-        this.stage = stage;
+        GUIDriver.stage = stage;
         ClassLoader resourceLoader = ClassLoader.getSystemClassLoader();
         //TODO font
         //Font.loadFont(resourceLoader.getResourceAsStream(""), 0);
@@ -49,7 +51,7 @@ public class GUIDriver extends Application {
         onboardController = onboardLoader.getController();
         logger.debug("Onboard menu UI controller assigned");
 
-        showOnboardMenuScene();
+        stage.setScene(onboardMenu);
         stage.setFullScreen(CONSTANTS.IS_UI_FULLSCREEN());
         stage.setFullScreenExitHint("");
         stage.show();
@@ -57,12 +59,13 @@ public class GUIDriver extends Application {
         logger.info("UI resource loading complete, UI shown.");
     }
 
-    public void showMusicDetailScene() {
-        stage.setScene(musicDetail);
-    }
-
-    public void showOnboardMenuScene() {
-        stage.setScene(onboardMenu);
+    public static void toggleScene() {
+        if (musicDetailShown) {
+            Platform.runLater(() -> stage.setScene(onboardMenu));
+        }else {
+            Platform.runLater(() -> stage.setScene(musicDetail));
+        }
+        musicDetailShown = !musicDetailShown;
     }
 
     public static synchronized BtPlayerController getBluetoothUIController() {

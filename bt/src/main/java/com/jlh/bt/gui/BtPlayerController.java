@@ -1,62 +1,138 @@
 package com.jlh.bt.gui;
 
+import java.io.ByteArrayInputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jlh.bt.constants.Constants;
+import com.jlh.bt.onboard.media.MediaController;
+import com.jlh.bt.onboard.menu.MusicLoader;
 import com.jlh.bt.os.BluetoothController;
 import com.jlh.bt.os.ShellController;
 
-import javafx.beans.binding.Bindings;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 public class BtPlayerController {
 
-    @FXML private Label device;
-    @FXML private Circle discoverable;
+    @FXML private Label mediaSource;
 
-    @FXML private Label artist;
-    @FXML private Label album;
-    @FXML private Label name;
+    @FXML private Pane artist;
+    @FXML private Pane album;
+    @FXML private Pane name;
 
     @FXML private ProgressBar volumeBar;
-    @FXML private Label volume;
+    @FXML private ProgressBar trackProgress;
+
+    @FXML private ImageView shuffle;
+    @FXML private ImageView albumArt;
+    private Image unknownArtImage;
 
     private BluetoothController bt;
+    private MediaController onboard;
 
-    private boolean bluetoothActive = true;
+    private boolean bluetoothActive = false;
+    
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Constants CONSTANTS = Constants.getInstance();
 
     public void setBluetoothController(BluetoothController bt) {
         this.bt = bt;
-        createBindings();
     }
 
-    private void createBindings() {
-        device.textProperty().bind(Bindings.createStringBinding(() -> {
-            return bluetoothActive ?
-                bt.getConnectedDeviceName() : 
-                "Onboard Media;";
-        }));
+    public void setOnboardController(MediaController onboard) {
+        this.onboard = onboard;
 
-        artist.textProperty().bind(Bindings.createStringBinding(() -> bt.getArtistName()));
-        album.textProperty().bind(Bindings.createStringBinding(() -> bt.getAlbumName()));
-        name.textProperty().bind(Bindings.createStringBinding(() -> bt.getSongName()));
+        startTrackProgressUpdater();
+    }
 
-        volume.textProperty().bind(Bindings.createStringBinding(() -> ShellController.getInstance().getCurrentVolume() + ""));
-        volumeBar.progressProperty().bind(Bindings.createDoubleBinding(() -> ShellController.getInstance().getCurrentVolume() / 100.0));
+    public void updateTrack() {
+        Platform.runLater(() -> {
+            artist.getChildren().clear();
+            album.getChildren().clear();
+            name.getChildren().clear();
+        });
+        if (bluetoothActive) {
+            updateTrackBt();
+        }else {
+            updateTrackOnboard();
+        }
+    }
 
-        discoverable.fillProperty().bind(Bindings.createObjectBinding(() -> {
-            if (bluetoothActive) {
-                return BluetoothController.getInstance().isDiscoverable() ? 
-                    Color.GREEN :
-                    Color.RED;
-            }
-            return Color.BLACK;
-        }));
+    private void updateTrackBt() {
+        Platform.runLater(() -> {
+            artist.getChildren().add(new ScrollingText(bt.getArtistName(), CONSTANTS.MUSIC_DETAIL_TEXT_WIDTH(), true));
+            album.getChildren().add(new ScrollingText(bt.getAlbumName(), CONSTANTS.MUSIC_DETAIL_TEXT_WIDTH(), true));
+            name.getChildren().add(new ScrollingText(bt.getSongName(), CONSTANTS.MUSIC_DETAIL_TEXT_WIDTH(), true));           
+        });
+    }
+
+    private void updateTrackOnboard() {
+        Platform.runLater(() -> {
+            artist.getChildren().add(new ScrollingText(onboard.getCurrentTrack().artist(), CONSTANTS.MUSIC_SPOTLIGHT_TEXT_WIDTH(), true));
+            album.getChildren().add(new ScrollingText(onboard.getCurrentTrack().album(), CONSTANTS.MUSIC_SPOTLIGHT_TEXT_WIDTH(), true));
+            name.getChildren().add(new ScrollingText(onboard.getCurrentTrack().name(), CONSTANTS.MUSIC_SPOTLIGHT_TEXT_WIDTH(), true));
+            
+            albumArt.setImage(getAlbumArt());
+            trackProgress.setProgress(0);
+        });
+    }
+
+    public void toggleShuffle() {
+        Platform.runLater(() -> shuffle.setVisible(!shuffle.isVisible()));
+    }
+
+    private void startTrackProgressUpdater() {
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.seconds(0),
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        if (bluetoothActive) {
+                            mediaSource.setText(bt.getConnectedDeviceName());
+                        }else {
+                            trackProgress.setProgress(onboard.getPercentageComplete());
+                        }
+                        volumeBar.setProgress(ShellController.getInstance().getCurrentVolume() / 100.0);
+                    }
+                }
+            ),
+            new KeyFrame(Duration.seconds(0.5))
+        );
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
     public void setBluetoothActive(boolean active) {
         bluetoothActive = active;
+
+        if (bluetoothActive) {
+            Platform.runLater(() -> albumArt.setImage(unknownArtImage));
+        }else {
+            mediaSource.setText("Onboard");
+        }
+    }
+
+    private Image getAlbumArt() {
+        byte[] buffer = MusicLoader.getInstance().getAlbumArt(onboard.getCurrentTrack());
+        if (buffer == null) {
+            logger.trace("Unknown album art found for track " + onboard.getCurrentTrack() + ", reverting to default image");
+            return unknownArtImage;
+        }
+        return new Image(new ByteArrayInputStream(buffer));
     }
     
 }

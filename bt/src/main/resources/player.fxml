@@ -2,20 +2,48 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Circle?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@player.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jlh.bt.gui.BtPlayerController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@player.css" xmlns="http://javafx.com/javafx/24" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jlh.bt.gui.BtPlayerController">
    
    <children>
-      <Label fx:id="device" layoutX="27.0" layoutY="28.0" text="Disconnected" textFill="WHITE" />
-      <Label fx:id="artist" layoutX="182.0" layoutY="131.0" text="ARTIST" textFill="WHITE" />
-      <Label fx:id="album" layoutX="188.0" layoutY="228.0" text="ALBUM" textFill="WHITE" />
-      <Label fx:id="name" layoutX="195.0" layoutY="314.0" text="NAME" textFill="WHITE" />
-      <Circle fx:id="discoverable" fill="#9e9e9e" layoutX="484.0" layoutY="67.0" radius="27.0" stroke="BLACK" strokeType="INSIDE" />
+      <Pane fx:id="artist" layoutX="490.0" layoutY="140.0" />
+      <Pane fx:id="album" layoutX="490.0" layoutY="240.0" />
+      <Pane fx:id="name" layoutX="490.0" layoutY="40.0" />
 
-      <ProgressBar fx:id="volumeBar" layoutX="525.0" layoutY="199.0" prefWidth="390.0" progress="0.2" rotate="-90.0" />
-      <Label fx:id="volume" layoutX="654.0" layoutY="402.0" text="vol%" textFill="WHITE" />
+      <ProgressBar fx:id="trackProgress" layoutX="14.0" layoutY="446.0" prefWidth="400.0" progress="0.2" />
+      <ImageView fx:id="albumArt" fitHeight="400.0" fitWidth="400.0" layoutX="14.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@unknown.png" />
+         </image>
+      </ImageView>
+      <ProgressBar fx:id="volumeBar" layoutX="14.0" layoutY="14.0" prefWidth="400.0" progress="0.2" />
+
+      <ImageView fitHeight="60.0" fitWidth="70.0" layoutX="420.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@title.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="410.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@artist.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="420.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@album.png" />
+         </image>
+      </ImageView>
+
+      <ImageView fx:id="shuffle" fitHeight="38.0" fitWidth="50.0" layoutX="756.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@shuffle.png" />
+         </image>
+      </ImageView>
+
+      <Label layoutX="420.0" layoutY="408.0" text="Onboard" fx:id="mediaSource" />
    </children>
 
 </Pane>

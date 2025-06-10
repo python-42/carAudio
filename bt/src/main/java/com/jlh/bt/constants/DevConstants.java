@@ -59,6 +59,9 @@ class DevConstants extends Constants {
     public int MUTE_BUTTON() {return 50;}
 
     @Override
+    public int M_BUTTON() {return 41;}
+
+    @Override
     public int SHUFFLE_BUTTON() {return 19;}
 
     @Override

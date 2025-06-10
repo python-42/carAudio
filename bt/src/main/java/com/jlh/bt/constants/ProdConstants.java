@@ -58,6 +58,9 @@ class ProdConstants extends Constants {
     public int MUTE_BUTTON() {return -1;}
 
     @Override
+    public int M_BUTTON() {return -1;}
+
+    @Override
     public int SHUFFLE_BUTTON() {return -1;}
 
     @Override

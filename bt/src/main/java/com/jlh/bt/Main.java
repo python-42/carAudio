@@ -59,9 +59,10 @@ public class Main {
         logger.debug("GUIDriver successfully provided UI controller");
 
         menu = new MenuController(new File(CONSTANTS.ONBOARD_MEDIA_DIRECTORY()));
-        media = new MediaController(() -> onboardUI.updateTrack());
+        media = new MediaController(() -> {onboardUI.updateTrack(); bluetoothUI.updateTrack();});
 
         onboardUI.setOnboardController(media, menu);
+        bluetoothUI.setOnboardController(media);
 
         ShellController.getInstance().resetVolume();
         registerCanCallbacks();
@@ -76,13 +77,16 @@ public class Main {
         can.registerCallback(() -> {menu.descend(); onboardUI.updateMenu();}, CONSTANTS.RIGHT_BUTTON(), false);
         can.registerCallback(() -> media.setPlaylist(menu.getPlaylist()), CONSTANTS.OK_BUTTON(), false);
 
+        can.registerCallback(() -> GUIDriver.toggleScene(), CONSTANTS.M_BUTTON(), false);
+
         can.registerCallback(() -> media.fastForward(), CONSTANTS.SKIP_BUTTON(), false);
         can.registerCallback(() -> media.previous(), CONSTANTS.PREV_BUTTON(), false);
         
         can.registerCallback(() -> {
             if (media.playlistExists()) {
-                media.toggleShuffle(); 
+                media.toggleShuffle();
                 onboardUI.toggleShuffle();
+                bluetoothUI.toggleShuffle();
             }
         }, CONSTANTS.SHUFFLE_BUTTON(), false);
     }

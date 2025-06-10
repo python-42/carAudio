@@ -40,6 +40,8 @@ public abstract class Constants {
     public final int MUSIC_DETAIL_TEXT_WIDTH() {return 20;}
     public final int MENU_MAX_VISIBLE_TRACK_COUNT() {return 10;}
 
+    public final int MUSIC_SPOTLIGHT_TEXT_WIDTH() {return 15;}
+
     //logging
     public final String LOG_LEVEL_CLASSES_PROPERTY() {return "org.slf4j.simpleLogger.log.com.jlh.bt";}
     public abstract String LOG_FILE_PATH();
@@ -67,6 +69,7 @@ public abstract class Constants {
     public abstract int VOLUME_INCREMENT_BUTTON();
     public abstract int VOLUME_DECREMENT_BUTTON();
     public abstract int MUTE_BUTTON();
+    public abstract int M_BUTTON();
 
     //center control panel
     public abstract int SHUFFLE_BUTTON();
