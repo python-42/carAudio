@@ -120,10 +120,9 @@ public class Playlist {
 
     /**
      * Set the current track index. 
-     * This method is protected, meaning it can be accessed within this package only.
      * @param index The current track index to use
      */
-    protected void setIndex(int index) {
+    public void setIndex(int index) {
         if (index > 0 && index < getTrackCount()) {
             currentTrack = index;
         }
