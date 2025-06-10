@@ -18,7 +18,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,11 +26,10 @@ import javafx.util.Duration;
 
 public class BtPlayerController {
 
-    @FXML private Label mediaSource;
-
     @FXML private Pane artist;
     @FXML private Pane album;
     @FXML private Pane name;
+    @FXML private Pane playlistName;
 
     @FXML private ProgressBar volumeBar;
     @FXML private ProgressBar trackProgress;
@@ -63,6 +61,7 @@ public class BtPlayerController {
             artist.getChildren().clear();
             album.getChildren().clear();
             name.getChildren().clear();
+            playlistName.getChildren().clear();
         });
         if (bluetoothActive) {
             updateTrackBt();
@@ -84,7 +83,7 @@ public class BtPlayerController {
             artist.getChildren().add(new ScrollingText(onboard.getCurrentTrack().artist(), CONSTANTS.MUSIC_SPOTLIGHT_TEXT_WIDTH(), true));
             album.getChildren().add(new ScrollingText(onboard.getCurrentTrack().album(), CONSTANTS.MUSIC_SPOTLIGHT_TEXT_WIDTH(), true));
             name.getChildren().add(new ScrollingText(onboard.getCurrentTrack().name(), CONSTANTS.MUSIC_SPOTLIGHT_TEXT_WIDTH(), true));
-            
+            playlistName.getChildren().add(new ScrollingText(onboard.getPlaylistName(), CONSTANTS.MUSIC_SPOTLIGHT_TEXT_WIDTH(), true));
             albumArt.setImage(getAlbumArt());
             trackProgress.setProgress(0);
         });
@@ -100,9 +99,7 @@ public class BtPlayerController {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
-                        if (bluetoothActive) {
-                            mediaSource.setText(bt.getConnectedDeviceName());
-                        }else {
+                        if (!bluetoothActive) {
                             trackProgress.setProgress(onboard.getPercentageComplete());
                         }
                         volumeBar.setProgress(ShellController.getInstance().getCurrentVolume() / 100.0);
@@ -121,8 +118,6 @@ public class BtPlayerController {
 
         if (bluetoothActive) {
             Platform.runLater(() -> albumArt.setImage(unknownArtImage));
-        }else {
-            mediaSource.setText("Onboard");
         }
     }
 

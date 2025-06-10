@@ -1,9 +1,9 @@
 Label {
-    -fx-font-size: 40px;
+    -fx-font: 40px monospace;
 }
 
 ScrollingText {
-    -fx-font-size: 40px;
+    -fx-font: 40px monospace;
     -fx-text-fill: white;
 }
 

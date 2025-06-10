@@ -27,7 +27,7 @@ public class ScrollingText extends Label {
 
         this.setTextOverrun(OverrunStyle.CLIP);
 
-        if (text.length() < length) {
+        if (text.length() <= length) {
             this.setText(text);
             timeline = null;
         }else {

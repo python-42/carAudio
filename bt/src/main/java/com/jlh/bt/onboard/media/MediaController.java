@@ -41,6 +41,10 @@ public class MediaController {
         return Track.NOTHING;
     }
 
+    public String getPlaylistName() {
+        return playlist.getName();
+    }
+
     /**
      * Return the percent complete the track is.
      * @return double between 0 and 1 inclusive
