@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public record Track(int id, String name, String artist, String album, String genre, int trackNo, int albumReleaseYear, File file) implements Comparable<Track> {
 
-    public static final Track NOTHING = new Track(-1, "No track", "", "", "", -1, -1, null);
+    public static final Track NOTHING = new Track(-1, "No track", "-", "-", "", -1, -1, null);
 
     @Override
     public String toString() {

@@ -53,6 +53,8 @@ public class BtPlayerController {
     public void setOnboardController(MediaController onboard) {
         this.onboard = onboard;
 
+        unknownArtImage = albumArt.getImage();
+        updateTrack();
         startTrackProgressUpdater();
     }
 

@@ -42,7 +42,11 @@ public class MediaController {
     }
 
     public String getPlaylistName() {
-        return playlist.getName();
+        if (playlist != null) {
+            return playlist.getName();
+        }else {
+            return "-";
+        }
     }
 
     /**
