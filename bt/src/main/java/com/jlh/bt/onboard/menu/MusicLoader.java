@@ -1,5 +1,6 @@
 package com.jlh.bt.onboard.menu;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ import com.jlh.bt.util.Pair;
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.Mp3File;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class MusicLoader {
 
@@ -76,14 +80,14 @@ public class MusicLoader {
     public Pair<Menu, Playlist> constructHighLevelMenu(File directory) {
         Playlist allSongs = new Playlist("All Songs", loadMusicFiles(directory));
 
-        Menu artistMenu = getCategoryMenu(artistPlaylistMap, "Artists", (t) -> t.name() + " - " + t.album());
+        Menu artistMenu = getCategoryMenu(artistPlaylistMap, "Artists", (t) -> t.name());
         Menu genreMenu = getCategoryMenu(genrePlaylistMap, "Genres", (t) -> t.name() + " - " + t.artist());
 
         Menu rootMenu = new Menu(
             List.of(
-                new MenuItem("Artist", artistMenu, allSongs, 0),
-                new MenuItem("Genre", genreMenu, allSongs, 0)
-            ), 
+                new MenuItem("Artist", artistMenu, allSongs, 0, 0),
+                new MenuItem("Genre", genreMenu, allSongs, 0,0)
+            ),
             "Onboard Music"
         );
 
@@ -100,28 +104,52 @@ public class MusicLoader {
      * @return Menu object with the provided title
      */
     private Menu getCategoryMenu(SortedMap<String, Playlist> map, String title, Function<Track, String> trackName) {
-        List<MenuItem> menuItems = new ArrayList<>(map.size());
+        List<MenuElement> menuItems = new ArrayList<>(map.size());
 
         for (Entry<String, Playlist> entry : map.entrySet()) {
             Playlist playlist = entry.getValue();
             playlist.sortSongs();
 
             //create menu displaying an artists discography or all songs in a genre
-            List<MenuItem> subMenuItems = new ArrayList<>(playlist.getTrackCount());
+            List<MenuElement> subMenuElements = new ArrayList<>(playlist.getTrackCount());
+
+            String albumName = "";
+            MenuHeader header = null;
+
             for (int i = 0; i < playlist.getTrackCount(); i++) {
-                subMenuItems.add(new MenuItem(trackName.apply(playlist.getCurrentTrack()), null, playlist, i));
+                Track track = playlist.getCurrentTrack();
+
+                if (!track.album().equals(albumName)) {
+                    header = new MenuHeader(
+                            new ImageView(
+                                new Image(
+                                    new ByteArrayInputStream(getAlbumArt(track)),
+                                    35,
+                                    35,
+                                    false,
+                                    true
+                                )), 
+                            track.album()
+                    );
+
+                    subMenuElements.add(header);
+                }
+                MenuItem m = new MenuItem(trackName.apply(track), null, header, playlist, i, 80);
+                albumName = track.album();
+
+                subMenuElements.add(m);
                 playlist.nextTrack();
             }
 
-            Menu bottomMenu = new Menu(subMenuItems, entry.getKey()); //bottom because there are no submenus
+            Menu bottomMenu = new Menu(subMenuElements, entry.getKey()); //bottom because there are no submenus
             
             //create menu item for menu displaying each artist
-            menuItems.add(new MenuItem(entry.getKey(), bottomMenu, playlist, 0));
+            menuItems.add(new MenuItem(entry.getKey(), bottomMenu, playlist, 0, 0));
         }
 
         Menu menu = new Menu(menuItems, title);
-        for (MenuItem item : menuItems) {
-            item.getSubmenu().setParentMenu(menu);
+        for (MenuElement item : menuItems) {
+            ((MenuItem)item).getSubmenu().setParentMenu(menu);
         }
 
         return menu;

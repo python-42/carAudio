@@ -38,9 +38,9 @@ public abstract class Constants {
     public final String PLAYER_FXML_FILENAME() {return "player.fxml";}
     public final String ONBOARD_FXML_FILENAME() {return "onboard.fxml";}
     public abstract boolean IS_UI_FULLSCREEN();
-    public final int MENU_TEXT_WIDTH() {return 34;}
+    public final int MENU_TEXT_WIDTH() {return 28;}
     public final int MUSIC_DETAIL_TEXT_WIDTH() {return 11;}
-    public final int MENU_MAX_VISIBLE_TRACK_COUNT() {return 13;}
+    public final int MENU_MAX_VISIBLE_TRACK_COUNT() {return 12;}
 
     public final int MUSIC_SPOTLIGHT_TEXT_WIDTH() {return 16;}
 
@@ -52,6 +52,8 @@ public abstract class Constants {
     //menu css
     public final String FOCUSED_CSS() {return "-fx-border-color: white";}
     public final String UNFOCUSED_CSS() {return "-fx-border-color: black";}
+    public final String FOCUSED_TEXT_COLOR() {return "white";}
+    public final String UNFOCUSED_TEXT_COLOR() {return "#323232";}
     public final int ONBOARD_MENU_WIDTH() {return 600;}
 
     //onboard

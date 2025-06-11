@@ -19,7 +19,7 @@ import javafx.scene.paint.Paint;
 public class Menu {
     
     private Menu parentMenu;
-    private final List<MenuItem> items;
+    private final List<MenuElement> elements; 
     private final Label title;
     private final Constants CONSTANTS = Constants.getInstance();
 
@@ -28,41 +28,69 @@ public class Menu {
     private int minVisible = 0;
     private int maxVisible = CONSTANTS.MENU_MAX_VISIBLE_TRACK_COUNT();
 
-    public Menu(List<MenuItem> items, String title) {
-        this.items = new ArrayList<>();
-        this.items.addAll(items);
-        if (items.size() == 0) {
-            this.items.add(MenuItem.NO_ITEMS_ITEM);   
+    public Menu(List<MenuElement> items, String title) {    
+        this.elements = new ArrayList<>(items.size());
+        this.elements.addAll(items);
+
+        if (this.elements.size() == 0) {
+            this.elements.add(MenuItem.NO_ITEMS_ITEM);
         }
 
-        this.items.get(focus).setFocused(true);
+        getMenuItem(false).setFocused(true);
 
         this.title = new Label(title);
-        this.title.setTextFill(Paint.valueOf("ffffff"));
+        this.title.setTextFill(Paint.valueOf(CONSTANTS.FOCUSED_TEXT_COLOR()));
+    }
+
+    private MenuItem getMenuItem(boolean up) {
+        alignToMenuItem(up);
+        return (MenuItem) elements.get(focus);
+    }
+
+    private void alignToMenuItem(boolean up) {
+        if (focusInBounds() && elements.get(focus) instanceof MenuItem) {
+            return;
+        }else {
+            if (up) {
+                focus--;
+            }else {
+                focus++;
+            }
+            if (!focusInBounds()) {
+                alignToMenuItem(!up);
+            }
+            alignToMenuItem(up);
+        }
+    }
+
+    private boolean focusInBounds() {
+        return focus >= 0 && focus < elements.size();
     }
 
     public void focusDown() {
-        items.get(focus).setFocused(false);
-        if (focus != items.size() - 1) {
+        getMenuItem(false).setFocused(false);
+
+        if (focus != elements.size() - 1) {
             focus++;
-            if (focus >= maxVisible) {
-                minVisible++;
-                maxVisible++;
-            }
         }
-        items.get(focus).setFocused(true);
+        getMenuItem(false).setFocused(true);
+        while (maxVisible < elements.size() && focus + 1 >= maxVisible) {
+            minVisible++;
+            maxVisible++;
+        }
     }
 
     public void focusUp() {
-        items.get(focus).setFocused(false);
+        getMenuItem(true).setFocused(false);
         if (focus != 0) {
             focus--;
-            if (focus < minVisible) {
-                minVisible--;
-                maxVisible--;
-            }
         }
-        items.get(focus).setFocused(true);
+        getMenuItem(true).setFocused(true);
+
+        while (minVisible > 0 && focus - 1 < minVisible) {
+            minVisible--;
+            maxVisible--;
+        }
     }
 
     /**
@@ -70,7 +98,7 @@ public class Menu {
      * @return Menu object or null
      */
     public Menu descend() {
-        return items.get(focus).getSubmenu();
+        return getMenuItem(false).getSubmenu();
     }
 
     public boolean canDescend() {
@@ -82,7 +110,7 @@ public class Menu {
      * @return Playlist object or null
      */
     public Playlist getPlaylist() {
-        return items.get(focus).getPlaylist();
+        return getMenuItem(false).getSubmenu().getPlaylist();
     }
 
     public VBox getUIComponent() {
@@ -106,12 +134,12 @@ public class Menu {
 
         if (needsToScroll()) {
             for (int i = minVisible; i < maxVisible; i++) {
-                children.add(items.get(i).getUIComponent());
+                children.add(elements.get(i).getUIComponent());
             }
         }else {
             //all of the items can be visible at once
-            for (MenuItem item : items) {
-                children.add(item.getUIComponent());
+            for (MenuElement element : elements) {
+                children.add(element.getUIComponent());
             }
         }
 
@@ -123,11 +151,11 @@ public class Menu {
      * Determine if the additional logic required for scrolling items is required. 
      */
     private boolean needsToScroll() {
-        return items.size() > CONSTANTS.MENU_MAX_VISIBLE_TRACK_COUNT();
+        return elements.size() > CONSTANTS.MENU_MAX_VISIBLE_TRACK_COUNT();
     }
 
     private String getScrollIndicator() {
-        if (minVisible > 0 && maxVisible < items.size()) {
+        if (minVisible > 0 && maxVisible < elements.size()) {
             return "\u21F3"; // up down arrow
         }else if(minVisible > 0) {
             return "\u21E7"; //up arrow
