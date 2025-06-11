@@ -13,6 +13,9 @@ class DevConstants extends Constants {
     public String FAVORITE_FILE_NAME() {return "/home/jake/CarDev/favoriteAddr";}
 
     @Override
+    public String FAVORITE_PLAYLIST_FILE() {return "/home/jake/CarDev/favoritePlaylist";}
+
+    @Override
     public int FAVORITE_CONNECTION_TIMEOUT() {return 1000;}
 
     @Override
@@ -105,4 +108,10 @@ class DevConstants extends Constants {
 
     @Override
     public int BUTTON_0() {return 11;}
+
+    @Override
+    public int HASHTAG_BUTTON() {return 15;} //tab
+
+    @Override
+    public int STAR_BUTTON() {return -1;}
 }

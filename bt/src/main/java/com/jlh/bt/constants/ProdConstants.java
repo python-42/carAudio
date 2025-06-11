@@ -13,6 +13,9 @@ class ProdConstants extends Constants {
     public String FAVORITE_FILE_NAME() {return "/home/dodge/favoriteAddr";}
 
     @Override
+    public String FAVORITE_PLAYLIST_FILE() {return "/home/dodge/favoritePlaylist";}
+
+    @Override
     public int FAVORITE_CONNECTION_TIMEOUT() {return 1000;}
 
     @Override
@@ -104,4 +107,10 @@ class ProdConstants extends Constants {
 
     @Override
     public int BUTTON_0() {return -1;}
+
+    @Override
+    public int HASHTAG_BUTTON() {return -1;}
+
+    @Override
+    public int STAR_BUTTON() {return -1;}
 }

@@ -28,6 +28,8 @@ public abstract class Constants {
     public abstract String FAVORITE_FILE_NAME();
     public abstract int FAVORITE_CONNECTION_TIMEOUT();
 
+    public abstract String FAVORITE_PLAYLIST_FILE();
+
     //volume
     public final int VOLUME_RESET_PERCENTAGE() {return 50;}
     public final int VOLUME_CHANGE_PERCENTAGE() {return 5;}
@@ -91,4 +93,6 @@ public abstract class Constants {
     public abstract int BUTTON_8();
     public abstract int BUTTON_9();
     public abstract int BUTTON_0();
+    public abstract int HASHTAG_BUTTON();
+    public abstract int STAR_BUTTON();
 }

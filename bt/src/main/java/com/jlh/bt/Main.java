@@ -12,6 +12,8 @@ import com.jlh.bt.gui.BtPlayerController;
 import com.jlh.bt.gui.GUIDriver;
 import com.jlh.bt.gui.OnboardController;
 import com.jlh.bt.hardware.CANDriver;
+import com.jlh.bt.onboard.media.FavoritePlaylistManager;
+import com.jlh.bt.onboard.media.FavoritePlaylists;
 import com.jlh.bt.onboard.media.MediaController;
 import com.jlh.bt.onboard.menu.MenuController;
 import com.jlh.bt.os.BluetoothController;
@@ -26,6 +28,9 @@ public class Main {
 
     private final MediaController media;
     private final MenuController menu;
+
+    private final FavoritePlaylistManager favoritePlaylistManager;
+    private final FavoritePlaylists favoritePlaylists;
 
     private final Constants CONSTANTS;
 
@@ -64,6 +69,9 @@ public class Main {
         onboardUI.setOnboardController(media, menu);
         bluetoothUI.setOnboardController(media);
 
+        favoritePlaylists = new FavoritePlaylists(new File(CONSTANTS.FAVORITE_PLAYLIST_FILE()), media);
+        favoritePlaylistManager = new FavoritePlaylistManager(favoritePlaylists);
+
         ShellController.getInstance().resetVolume();
         registerCanCallbacks();
         //bluetoothInit();
@@ -89,6 +97,19 @@ public class Main {
                 bluetoothUI.toggleShuffle();
             }
         }, CONSTANTS.SHUFFLE_BUTTON(), false);
+
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(0), CONSTANTS.BUTTON_0(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(1), CONSTANTS.BUTTON_1(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(2), CONSTANTS.BUTTON_2(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(3), CONSTANTS.BUTTON_3(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(4), CONSTANTS.BUTTON_4(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(5), CONSTANTS.BUTTON_5(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(6), CONSTANTS.BUTTON_6(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(7), CONSTANTS.BUTTON_7(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(8), CONSTANTS.BUTTON_8(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(9), CONSTANTS.BUTTON_9(), false);
+        can.registerCallback(() -> favoritePlaylistManager.playCurrentlySelected(), CONSTANTS.HASHTAG_BUTTON(), false);
+
     }
 
     private void bluetoothInit() {

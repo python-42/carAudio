@@ -61,6 +61,16 @@ public class MusicLoader {
     public TrackStats getStats() {
         return stats;
     }
+
+    public Playlist getPlaylist(String name) {
+        if (name == null) {
+            return null;
+        }
+        if (artistPlaylistMap.containsKey(name)) {
+            return artistPlaylistMap.get(name);
+        }
+        return genrePlaylistMap.get(name);
+    }
     
     public Pair<Menu, Playlist> constructHighLevelMenu(File directory) {
         Playlist allSongs = new Playlist("All Songs", loadMusicFiles(directory));

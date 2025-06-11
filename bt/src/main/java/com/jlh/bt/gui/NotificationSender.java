@@ -13,7 +13,18 @@ public class NotificationSender {
                 .title(title)
                 .text(text)
                 .darkStyle()
-                .show()
+                .showInformation()
+        );
+    }
+
+    public static void sendWarningNotification(String title, String text) {
+        Platform.runLater(() ->
+            Notifications.create()
+                .hideCloseButton()
+                .title(title)
+                .text(text)
+                .darkStyle()
+                .showWarning()
         );
     }
 }
