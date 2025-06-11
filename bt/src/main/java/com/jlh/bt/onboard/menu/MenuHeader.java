@@ -1,9 +1,9 @@
 package com.jlh.bt.onboard.menu;
 
 import com.jlh.bt.constants.Constants;
+import com.jlh.bt.gui.ScrollingText;
 
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -12,7 +12,7 @@ import javafx.scene.paint.Paint;
 public class MenuHeader implements MenuElement {
 
     private final HBox box;
-    private final Label label;
+    private final ScrollingText label;
     private final Constants CONSTANTS = Constants.getInstance();
 
     public MenuHeader(ImageView albumArt, String text) {
@@ -22,7 +22,7 @@ public class MenuHeader implements MenuElement {
         Region rSpacer = new Region();
         rSpacer.setMinWidth(15);
 
-        label = new Label(text);
+        label = new ScrollingText(text, CONSTANTS.MENU_HEADER_TEXT_WIDTH());
 
         box = new HBox(lSpacer, albumArt, rSpacer, label);
         box.setPadding(new Insets(0, 0, 5, 0));
@@ -35,6 +35,7 @@ public class MenuHeader implements MenuElement {
     }
 
     public void setFocused(boolean focused) {
+        label.setScrollingEnabled(focused);
         if (focused) {
             label.setTextFill(Paint.valueOf(CONSTANTS.FOCUSED_TEXT_COLOR()));
             box.setStyle("-fx-border-style: hidden hidden solid hidden; -fx-border-color: "+ CONSTANTS.FOCUSED_TEXT_COLOR() +";");
