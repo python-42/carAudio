@@ -80,8 +80,8 @@ public class MusicLoader {
     public Pair<Menu, Playlist> constructHighLevelMenu(File directory) {
         Playlist allSongs = new Playlist("All Songs", loadMusicFiles(directory));
 
-        Menu artistMenu = getCategoryMenu(artistPlaylistMap, "Artists", (t) -> t.name());
-        Menu genreMenu = getCategoryMenu(genrePlaylistMap, "Genres", (t) -> t.name() + " - " + t.artist());
+        Menu artistMenu = getCategoryMenu(artistPlaylistMap, "Artists", (t) -> t.album());
+        Menu genreMenu = getCategoryMenu(genrePlaylistMap, "Genres", (t) -> t.album() + " - " + t.artist());
 
         Menu rootMenu = new Menu(
             List.of(
@@ -103,7 +103,7 @@ public class MusicLoader {
      * @param title the title of the parent menu
      * @return Menu object with the provided title
      */
-    private Menu getCategoryMenu(SortedMap<String, Playlist> map, String title, Function<Track, String> trackName) {
+    private Menu getCategoryMenu(SortedMap<String, Playlist> map, String title, Function<Track, String> headerName) {
         List<MenuElement> menuItems = new ArrayList<>(map.size());
 
         for (Entry<String, Playlist> entry : map.entrySet()) {
@@ -129,12 +129,12 @@ public class MusicLoader {
                                     false,
                                     true
                                 )), 
-                            track.album()
+                            headerName.apply(track)
                     );
 
                     subMenuElements.add(header);
                 }
-                MenuItem m = new MenuItem(trackName.apply(track), null, header, playlist, i, 80);
+                MenuItem m = new MenuItem(track.name(), null, header, playlist, i, 80);
                 albumName = track.album();
 
                 subMenuElements.add(m);
