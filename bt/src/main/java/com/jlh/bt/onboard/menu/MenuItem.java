@@ -100,6 +100,14 @@ public class MenuItem implements MenuElement {
         return submenu;
     }
 
+    public boolean menuHeaderInvisible() {
+        return header != null && !header.getIsVisible();
+    }
+
+    public MenuHeader getMenuHeader() {
+        return header;
+    }
+
     /**
      * Get the playlist associated with this menu item. May be null. 
      * The caller should start playback from the current track. 

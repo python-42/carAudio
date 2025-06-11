@@ -14,6 +14,7 @@ public class MenuHeader implements MenuElement {
     private final HBox box;
     private final ScrollingText label;
     private final Constants CONSTANTS = Constants.getInstance();
+    private boolean isVisible = false;
 
     public MenuHeader(ImageView albumArt, String text) {
 
@@ -43,6 +44,14 @@ public class MenuHeader implements MenuElement {
             label.setTextFill(Paint.valueOf(CONSTANTS.UNFOCUSED_TEXT_COLOR()));
             box.setStyle("-fx-border-style: hidden hidden solid hidden; -fx-border-color: "+ CONSTANTS.UNFOCUSED_TEXT_COLOR() +";");
         }
+    }
+
+    public void setIsVisible(boolean state) {
+        isVisible = state;
+    } 
+
+    public boolean getIsVisible() {
+        return isVisible;
     }
     
 }

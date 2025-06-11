@@ -117,6 +117,12 @@ public class Menu {
         VBox rtn = new VBox();
         ObservableList<Node> children = rtn.getChildren();
 
+        for (MenuElement e : elements) {
+            if (e instanceof MenuHeader) {
+                ((MenuHeader)e).setIsVisible(false);
+            }
+        }
+
         if (needsToScroll()) {
             HBox titleBox = new HBox();
             Region spacer = new Region();
@@ -135,6 +141,14 @@ public class Menu {
         if (needsToScroll()) {
             for (int i = minVisible; i < maxVisible; i++) {
                 children.add(elements.get(i).getUIComponent());
+                if (elements.get(i) instanceof MenuHeader) {
+                    ((MenuHeader)elements.get(i)).setIsVisible(true);
+                }
+            }
+            MenuItem currentlyFocused = getMenuItem(false);
+            if (currentlyFocused.menuHeaderInvisible()) {
+                children.remove(1);
+                children.add(1, currentlyFocused.getMenuHeader().getUIComponent());
             }
         }else {
             //all of the items can be visible at once
