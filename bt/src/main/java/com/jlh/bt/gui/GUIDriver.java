@@ -15,8 +15,8 @@ public class GUIDriver extends Application {
 
     private Logger logger;
     private Constants CONSTANTS;
-    private static volatile BtPlayerController btController = null;
-    private static volatile OnboardController onboardController  = null;
+    private static volatile MusicSpotlightController btController = null;
+    private static volatile OnboardMediaSelectorController onboardController  = null;
 
     private static Stage stage;
     private static Scene musicDetail;
@@ -68,11 +68,11 @@ public class GUIDriver extends Application {
         musicDetailShown = !musicDetailShown;
     }
 
-    public static synchronized BtPlayerController getBluetoothUIController() {
+    public static synchronized MusicSpotlightController getBluetoothUIController() {
         return btController;
     }
 
-    public static synchronized OnboardController getOnboardUIController() {
+    public static synchronized OnboardMediaSelectorController getOnboardUIController() {
         return onboardController;
     }
     

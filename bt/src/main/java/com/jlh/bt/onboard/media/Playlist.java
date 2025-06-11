@@ -1,10 +1,8 @@
-package com.jlh.bt.onboard.menu;
+package com.jlh.bt.onboard.media;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.jlh.bt.onboard.media.Track;
 
 /**
  * Represents a group of songs. 

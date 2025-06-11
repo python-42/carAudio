@@ -24,7 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-public class BtPlayerController {
+public class MusicSpotlightController {
 
     @FXML private Pane artist;
     @FXML private Pane album;

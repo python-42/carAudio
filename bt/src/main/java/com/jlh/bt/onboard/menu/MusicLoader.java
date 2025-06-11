@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jlh.bt.constants.Constants;
 import com.jlh.bt.gui.NotificationSender;
+import com.jlh.bt.onboard.media.Playlist;
 import com.jlh.bt.onboard.media.Track;
 import com.jlh.bt.util.Pair;
 import com.mpatric.mp3agic.ID3v1;

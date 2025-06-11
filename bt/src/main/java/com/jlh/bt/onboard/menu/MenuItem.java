@@ -2,6 +2,7 @@ package com.jlh.bt.onboard.menu;
 
 import com.jlh.bt.constants.Constants;
 import com.jlh.bt.gui.ScrollingText;
+import com.jlh.bt.onboard.media.Playlist;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;

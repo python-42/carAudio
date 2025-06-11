@@ -27,7 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-public class OnboardController {
+public class OnboardMediaSelectorController {
     
     @FXML private AnchorPane menuPane;
 

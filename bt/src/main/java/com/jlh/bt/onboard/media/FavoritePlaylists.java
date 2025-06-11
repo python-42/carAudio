@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import com.jlh.bt.gui.NotificationSender;
 import com.jlh.bt.onboard.menu.MusicLoader;
-import com.jlh.bt.onboard.menu.Playlist;
 
 public class FavoritePlaylists {
     
@@ -35,13 +34,11 @@ public class FavoritePlaylists {
 
     private void loadFavorites() throws FileNotFoundException {
         Scanner sc = new Scanner(favoritesFile);
-        System.out.println("load favorites");
         while(sc.hasNextLine()) {
             String line = sc.nextLine();
             String[] arr = line.split(":");
             try {
                 favorites.put(Integer.parseInt(arr[0]), arr[1]);
-                System.out.println(line);
             }catch (NumberFormatException e) {
                 logger.error("Couldn't parse line " + line + " when loading favorites from file.", e);
             }

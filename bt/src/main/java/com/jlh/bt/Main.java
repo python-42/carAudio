@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.simple.SimpleLogger;
 
 import com.jlh.bt.constants.Constants;
-import com.jlh.bt.gui.BtPlayerController;
+import com.jlh.bt.gui.MusicSpotlightController;
 import com.jlh.bt.gui.GUIDriver;
-import com.jlh.bt.gui.OnboardController;
+import com.jlh.bt.gui.OnboardMediaSelectorController;
 import com.jlh.bt.hardware.CANDriver;
 import com.jlh.bt.onboard.media.FavoritePlaylistManager;
 import com.jlh.bt.onboard.media.MediaController;
@@ -22,8 +22,8 @@ import com.jlh.bt.os.ShellController;
 public class Main {
 
     private final Logger logger;
-    private final BtPlayerController bluetoothUI;
-    private final OnboardController onboardUI;
+    private final MusicSpotlightController bluetoothUI;
+    private final OnboardMediaSelectorController onboardUI;
 
     private final MediaController media;
     private final MenuController menu;

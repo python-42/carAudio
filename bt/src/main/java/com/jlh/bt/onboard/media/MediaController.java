@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jlh.bt.constants.Constants;
-import com.jlh.bt.onboard.menu.Playlist;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;

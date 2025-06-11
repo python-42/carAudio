@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jlh.bt.constants.Constants;
+import com.jlh.bt.onboard.media.Playlist;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;

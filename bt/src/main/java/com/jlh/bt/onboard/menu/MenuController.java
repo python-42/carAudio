@@ -2,6 +2,8 @@ package com.jlh.bt.onboard.menu;
 
 import java.io.File;
 
+import com.jlh.bt.onboard.media.Playlist;
+
 import javafx.scene.layout.VBox;
 
 public class MenuController {
