@@ -110,7 +110,7 @@ public class Menu {
      * @return Playlist object or null
      */
     public Playlist getPlaylist() {
-        return getMenuItem(false).getSubmenu().getPlaylist();
+        return getMenuItem(false).getPlaylist();
     }
 
     public VBox getUIComponent() {
