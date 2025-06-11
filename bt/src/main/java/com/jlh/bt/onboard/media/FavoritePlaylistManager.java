@@ -1,5 +1,7 @@
 package com.jlh.bt.onboard.media;
 
+import java.io.File;
+
 import org.controlsfx.tools.Utils;
 
 import javafx.animation.KeyFrame;
@@ -19,13 +21,15 @@ import javafx.util.Duration;
 public class FavoritePlaylistManager {
 
     private final FavoritePlaylists favoritePlaylists;
+    private final MediaController media;
     private Integer selectedPlaylist = null;
 
     private Popup popup = null;
     private Timeline timeline = null;
 
-    public FavoritePlaylistManager(FavoritePlaylists favoritePlaylists) {
-        this.favoritePlaylists = favoritePlaylists;
+    public FavoritePlaylistManager(File file, MediaController media) {
+        this.favoritePlaylists = new FavoritePlaylists(file, media);
+        this.media = media;
     }
 
     public void setSelectedPlaylist(int selected) {
@@ -97,6 +101,12 @@ public class FavoritePlaylistManager {
                 timeline.play();
             }
         );
+    }
+
+    public void setFavorite() {
+        if (selectedPlaylist != null && media.playlistExists()) {
+            favoritePlaylists.setFavorite(selectedPlaylist, media.getPlaylistName());
+        }
     }
 
     public void playCurrentlySelected() {

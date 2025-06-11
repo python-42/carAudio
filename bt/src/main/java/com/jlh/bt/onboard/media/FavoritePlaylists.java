@@ -54,7 +54,7 @@ public class FavoritePlaylists {
         FileWriter w = new FileWriter(favoritesFile, false);
         
         for (Entry<Integer, String> e : favorites.entrySet()) {
-            w.append(e.getKey() + ":" + e.getValue());
+            w.append(e.getKey() + ":" + e.getValue() + "\n");
         }
 
         w.close();
@@ -77,6 +77,7 @@ public class FavoritePlaylists {
     }
 
     public void setFavorite(int key, String playlistName) {
+        NotificationSender.sendInfoNotification("Playlist added to favorites", playlistName + " is now a favorite playlist on button " + key);
         favorites.put(key, playlistName);
         try {
             writeToFavFile();

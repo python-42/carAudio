@@ -13,7 +13,6 @@ import com.jlh.bt.gui.GUIDriver;
 import com.jlh.bt.gui.OnboardController;
 import com.jlh.bt.hardware.CANDriver;
 import com.jlh.bt.onboard.media.FavoritePlaylistManager;
-import com.jlh.bt.onboard.media.FavoritePlaylists;
 import com.jlh.bt.onboard.media.MediaController;
 import com.jlh.bt.onboard.menu.MenuController;
 import com.jlh.bt.os.BluetoothController;
@@ -30,7 +29,6 @@ public class Main {
     private final MenuController menu;
 
     private final FavoritePlaylistManager favoritePlaylistManager;
-    private final FavoritePlaylists favoritePlaylists;
 
     private final Constants CONSTANTS;
 
@@ -69,8 +67,7 @@ public class Main {
         onboardUI.setOnboardController(media, menu);
         bluetoothUI.setOnboardController(media);
 
-        favoritePlaylists = new FavoritePlaylists(new File(CONSTANTS.FAVORITE_PLAYLIST_FILE()), media);
-        favoritePlaylistManager = new FavoritePlaylistManager(favoritePlaylists);
+        favoritePlaylistManager = new FavoritePlaylistManager(new File(CONSTANTS.FAVORITE_PLAYLIST_FILE()), media);
 
         ShellController.getInstance().resetVolume();
         registerCanCallbacks();
@@ -108,7 +105,9 @@ public class Main {
         can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(7), CONSTANTS.BUTTON_7(), false);
         can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(8), CONSTANTS.BUTTON_8(), false);
         can.registerCallback(() -> favoritePlaylistManager.setSelectedPlaylist(9), CONSTANTS.BUTTON_9(), false);
+        
         can.registerCallback(() -> favoritePlaylistManager.playCurrentlySelected(), CONSTANTS.HASHTAG_BUTTON(), false);
+        can.registerCallback(() -> favoritePlaylistManager.setFavorite(), CONSTANTS.STAR_BUTTON(), false);
 
     }
 

@@ -113,5 +113,5 @@ class DevConstants extends Constants {
     public int HASHTAG_BUTTON() {return 15;} //tab
 
     @Override
-    public int STAR_BUTTON() {return -1;}
+    public int STAR_BUTTON() {return 42;} //shift
 }
