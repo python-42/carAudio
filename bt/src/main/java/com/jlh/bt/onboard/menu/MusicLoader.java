@@ -94,6 +94,8 @@ public class MusicLoader {
         artistMenu.setParentMenu(rootMenu);
         genreMenu.setParentMenu(rootMenu);
 
+        allSongs.sortSongs();
+
         return new Pair<Menu,Playlist>(rootMenu, allSongs);
     }
 
