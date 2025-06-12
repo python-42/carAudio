@@ -15,13 +15,13 @@ public class GUIDriver extends Application {
 
     private Logger logger;
     private Constants CONSTANTS;
-    private static volatile MusicSpotlightController btController = null;
+    private static volatile MusicSpotlightController spotlightController = null;
     private static volatile OnboardMediaSelectorController onboardController  = null;
 
     private static Stage stage;
-    private static Scene musicDetail;
+    private static Scene spotlight;
     private static Scene onboardMenu;
-    private static boolean musicDetailShown = false;
+    private static boolean spotlightShown = false;
 
     public GUIDriver(String[] args) {
         Application.launch(args);
@@ -37,17 +37,15 @@ public class GUIDriver extends Application {
         logger.info("UI resource loading started.");
         GUIDriver.stage = stage;
         ClassLoader resourceLoader = ClassLoader.getSystemClassLoader();
-        //TODO font
-        //Font.loadFont(resourceLoader.getResourceAsStream(""), 0);
 
-        FXMLLoader btLoader = new FXMLLoader(resourceLoader.getResource(CONSTANTS.PLAYER_FXML_FILENAME()));
+        FXMLLoader spotlightLoader = new FXMLLoader(resourceLoader.getResource(CONSTANTS.PLAYER_FXML_FILENAME()));
         FXMLLoader onboardLoader = new FXMLLoader(resourceLoader.getResource(CONSTANTS.ONBOARD_FXML_FILENAME()));
 
-        musicDetail = new Scene(btLoader.load());
+        spotlight = new Scene(spotlightLoader.load());
         onboardMenu = new Scene(onboardLoader.load());
 
-        btController = btLoader.getController();
-        logger.debug("Bluetooth player UI controller assigned");
+        spotlightController = spotlightLoader.getController();
+        logger.debug("Music spotlight UI controller assigned");
         onboardController = onboardLoader.getController();
         logger.debug("Onboard menu UI controller assigned");
 
@@ -60,16 +58,16 @@ public class GUIDriver extends Application {
     }
 
     public static void toggleScene() {
-        if (musicDetailShown) {
+        if (spotlightShown) {
             Platform.runLater(() -> stage.setScene(onboardMenu));
         }else {
-            Platform.runLater(() -> stage.setScene(musicDetail));
+            Platform.runLater(() -> stage.setScene(spotlight));
         }
-        musicDetailShown = !musicDetailShown;
+        spotlightShown = !spotlightShown;
     }
 
     public static synchronized MusicSpotlightController getBluetoothUIController() {
-        return btController;
+        return spotlightController;
     }
 
     public static synchronized OnboardMediaSelectorController getOnboardUIController() {

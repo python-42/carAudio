@@ -234,7 +234,7 @@ public class MusicLoader {
                         tags.getAlbumImage() != null 
                         && !albumArtCache.containsKey(tags.getArtist() + "-" + tags.getAlbum())
                     ) {
-                        logger.debug("Album " + tags.getArtist() + "-" + tags.getAlbum() + " has art, adding to map.");
+                        logger.trace("Album " + tags.getArtist() + "-" + tags.getAlbum() + " has art, adding to map.");
                         albumArt++;
                         albumArtCache.put(tags.getArtist() + "-" + tags.getAlbum(), tags.getAlbumImage());
                     }
@@ -283,7 +283,7 @@ public class MusicLoader {
 
     private void updatePlaylistMap(SortedMap<String, Playlist> map, String key, Track track) {
         if (!map.containsKey(key)) {
-            logger.debug("New track list created for " + key);
+            logger.trace("New track list created for " + key);
             map.put(key, new Playlist(key, List.of(track)));
         }else {
             map.get(key).appendTrack(track);
