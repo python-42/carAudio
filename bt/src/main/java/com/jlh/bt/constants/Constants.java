@@ -99,4 +99,6 @@ public abstract class Constants {
     public abstract int BUTTON_0();
     public abstract int HASHTAG_BUTTON();
     public abstract int STAR_BUTTON();
+
+    public final String BLANK_IMAGE_HEX_STRING() {return "89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52 00 00 00 01 00 00 00 01 08 02 00 00 00 90 77 53 DE 00 00 00 0F 49 44 41 54 78 01 01 04 00 FB FF 00 00 00 00 00 04 00 01 65 49 C3 60 00 00 00 00 49 45 4E 44 AE 42 60 82";}
 }

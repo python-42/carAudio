@@ -29,7 +29,7 @@ class DevConstants extends Constants {
 
 
     @Override
-    public String ONBOARD_MEDIA_DIRECTORY() {return "/home/jake/Music/Rap";}
+    public String ONBOARD_MEDIA_DIRECTORY() {return "/home/jake/Music";}
 
     @Override
     public int LEFT_BUTTON() {return 30;}

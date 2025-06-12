@@ -5,10 +5,11 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HexFormat;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -122,16 +123,20 @@ public class MusicLoader {
                 Track track = playlist.getCurrentTrack();
 
                 if (!track.album().equals(albumName)) {
+                    byte[] buffer = getAlbumArt(track);
+                    if (buffer == null) {
+                        buffer = HexFormat.ofDelimiter(" ").parseHex(CONSTANTS.BLANK_IMAGE_HEX_STRING());
+                    }
+
                     header = new MenuHeader(
-                            new ImageView(
-                                new Image(
-                                    new ByteArrayInputStream(getAlbumArt(track)),
+                        new ImageView(new Image(
+                                    new ByteArrayInputStream(buffer),
                                     35,
                                     35,
                                     false,
-                                    true
-                                )), 
-                            headerName.apply(track)
+                                    true)
+                        ), 
+                        headerName.apply(track)
                     );
 
                     subMenuElements.add(header);
@@ -194,7 +199,6 @@ public class MusicLoader {
         HashMap<String, Object> albumTable = new HashMap<>(); //take advantage of hashmap constant time reads to store album names
 
         int id = 0;
-        int albumArt = 0;
         for (File f : audioFiles) {
             Mp3File metadata;
             try {
@@ -226,8 +230,12 @@ public class MusicLoader {
                     updatePlaylistMap(artistPlaylistMap, newTrack.artist(), newTrack);
                     updatePlaylistMap(genrePlaylistMap, newTrack.genre(), newTrack);
 
-                    if (albumTable.get(newTrack.album()) == null) {
-                        albumTable.put(newTrack.album(), new Object());
+                    if (albumTable.get(newTrack.artist() + "-" + newTrack.album()) == null) {
+                        albumTable.put(newTrack.artist() + "-" + newTrack.album(), new Object());
+                    }
+
+                    if (tags.getAlbumImage() == null) {
+                        logger.info("Album " + tags.getAlbum() + " has no art");
                     }
 
                     if (
@@ -235,7 +243,6 @@ public class MusicLoader {
                         && !albumArtCache.containsKey(tags.getArtist() + "-" + tags.getAlbum())
                     ) {
                         logger.trace("Album " + tags.getArtist() + "-" + tags.getAlbum() + " has art, adding to map.");
-                        albumArt++;
                         albumArtCache.put(tags.getArtist() + "-" + tags.getAlbum(), tags.getAlbumImage());
                     }
 
@@ -258,7 +265,7 @@ public class MusicLoader {
                 artistPlaylistMap.size(), 
                 genrePlaylistMap.size(),
                 albumTable.size(), 
-                albumArt
+                albumArtCache.size()
             )
         );
 
@@ -266,7 +273,7 @@ public class MusicLoader {
             trackList.size(), 
             artistPlaylistMap.size(), 
             albumTable.size(), 
-            albumArt,
+            albumArtCache.size(),
             genrePlaylistMap.size()
         );
 
@@ -318,6 +325,8 @@ public class MusicLoader {
                 return "Rap";
             case 17:
                 return "Rock";
+            case 43:
+                return "Punk";
             case 66:
                 return "New Wave";
             case 131:
