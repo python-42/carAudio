@@ -163,7 +163,10 @@ public class MusicLoader {
     }
 
     private void getMusicFilesRecursive(File directory, List<File[]> files) {
-        files.add(directory.listFiles(isAudioFile));
+        File[] arr = directory.listFiles(isAudioFile);
+        if (arr != null) {
+            files.add(arr);
+        }
 
         for (File dir : directory.listFiles(isDirectory)) {
             getMusicFilesRecursive(dir, files);
