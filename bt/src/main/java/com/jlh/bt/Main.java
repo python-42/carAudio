@@ -71,7 +71,12 @@ public class Main {
 
         ShellController.getInstance().resetVolume();
         registerCanCallbacks();
-        //bluetoothInit();
+
+        if (CONSTANTS.IS_PROD()) {
+            bluetoothInit();
+        }else {
+            logger.warn("Skip bluetooth init because we are in dev environment");
+        }
     }
 
     private void registerCanCallbacks() {
