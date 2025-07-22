@@ -8,7 +8,7 @@ public abstract class Constants {
 
     public static Constants getInstance() {
         if (instance == null) {
-            if (new File("/home/jake/CarDev").exists()) {
+            if (new File("/home/jake").exists()) {
                 instance = new DevConstants();
             }else {
                 instance = new ProdConstants();

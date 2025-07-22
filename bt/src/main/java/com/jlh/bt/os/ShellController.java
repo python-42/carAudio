@@ -34,6 +34,10 @@ public class ShellController {
      * Reset the system audio volume to default value.
      */
     public void resetVolume() {
+        if (!CONSTANTS.IS_PROD()) {
+            logger.debug("Skipped volume reset command in dev env");
+            return;
+        }
         logger.debug("Volume reset command issued.");
         try {
             Runtime.getRuntime().exec("amixer -D pulse sset Master " + CONSTANTS.VOLUME_RESET_PERCENTAGE() + "%");
