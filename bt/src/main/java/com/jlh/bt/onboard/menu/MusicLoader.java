@@ -174,6 +174,7 @@ public class MusicLoader {
     }
 
     private List<Track> loadMusicFiles(File directory) {
+        long startTime = System.currentTimeMillis();
         //clear maps of any stale data
         albumArtCache.clear();
         artistPlaylistMap.clear();
@@ -257,18 +258,20 @@ public class MusicLoader {
             }
         }
 
-        logger.info(trackList.size() + " audio files loaded successfully.");
+        double loadTime = ((System.currentTimeMillis() - startTime) / 1000.0) + 0.005; //convert to seconds and prepare to round to 2 decimal places
+        logger.info(String.format("%d audio files loaded successfully in %.2f seconds.", trackList.size(), loadTime));
 
         NotificationSender.sendInfoNotification(
             "File loading complete", 
             String.format(
-                "%d files of %d successfully loaded.\nArtists: %d\nGenres: %d\nAlbums: %d (%d cover art images)", 
+                "%d files of %d successfully loaded.\nArtists: %d\nGenres: %d\nAlbums: %d (%d cover art images)\nin %.2f seconds", 
                 trackList.size(), 
                 audioFiles.length, 
                 artistPlaylistMap.size(), 
                 genrePlaylistMap.size(),
                 albumTable.size(), 
-                albumArtCache.size()
+                albumArtCache.size(),
+                loadTime
             )
         );
 
